@@ -1,5 +1,0 @@
-# OpenRP Chat Messages.
-
-invalid-use: '&cInvalid use. Please try /{usage}.'
-no-use-perm: '&cYou are not allowed to speak in this chat channel.'
-cooldown: '&cYou must wait {time} seconds before speaking in this chat channel again.'
