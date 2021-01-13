@@ -1,0 +1,31 @@
+# OpenRP Descriptions Messages
+
+invalid-use: '&cInvalid use. Please try /{usage}.'
+no-perm: '&cYou do not have permission to run this command.'
+
+field-manipulation:
+   field-set-format:
+   - ''
+   - '&8[&6{field}&8]'
+   - '{change}'
+   - '&f{value}'
+   change:
+      single: '&a&l[CLICK TO CHANGE]'
+      list: '&a&l// &7{value} '
+      locked: '&c[LOCKED]'
+
+invalid-field: '&cThat field doesn''t exist!'
+invalid-player: '&cThat user doesn''t exist!'
+not-allowed:
+   contains: '&cYou can only use these characters for this field: {val}.'
+   without: '&cYou cannot use the following characters in your field: {val}.'
+   list: '&cYou must pick an element from this list: {val}.'
+   locked: '&cThis field cannot be changed.'
+invalid-length:
+   min: '&cThis field must have at least {len} characters.'
+   max: '&cThis field cannot have more than {len} characters.'
+cooldown: '&cYou must wait {time} seconds before setting this value.'
+
+set:
+   self: '&aValue of &e{field}&a has been changed to &d{value}&a.'
+   override: '&aValue of &e{field}&a for &b{player}&a changed to &d{value}&a.'
