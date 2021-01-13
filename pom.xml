@@ -8,11 +8,12 @@
   <description>Open-source powerful Roleplaying Engine &amp; API for Spigot.</description>
   
   <repositories>
-    <repository>
+ 
+ 	<repository>
         <id>spigot-repo</id>
         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
-    
+ 
     <repository>
   		<id>mvdw-software</id>
   		<name>MVdW Public Repositories</name>
@@ -23,12 +24,14 @@
         <id>placeholderapi</id>
         <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
+    
   </repositories>
   
   <dependencies>
+  
     <dependency>
-    	<groupId>org.spigotmc</groupId>
-        <artifactId>spigot</artifactId>
+        <groupId>org.spigotmc</groupId>
+        <artifactId>spigot-api</artifactId>
         <version>1.13-R0.1-SNAPSHOT</version>
         <scope>provided</scope>
     </dependency>
@@ -36,7 +39,13 @@
     <dependency>
   		<groupId>be.maximvdw</groupId>
   		<artifactId>MVdWPlaceholderAPI</artifactId>
-  		<version>2.1.1-SNAPSHOT</version>
+  		<version>3.1.1-SNAPSHOT</version>
+  		<exclusions>
+        	<exclusion>
+            	<groupId>*</groupId>
+            	<artifactId>*</artifactId>
+        	</exclusion>
+    	</exclusions>
     </dependency>
     
     <dependency>
