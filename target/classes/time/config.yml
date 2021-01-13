@@ -1,0 +1,60 @@
+# OpenRP Time
+
+manage-perm: orptime.manage
+
+disabled-worlds:
+#- disabled-world1
+#- disabled-world2
+#. . .
+
+# The lower this number, the more accuracy in time checking, but the more potential lag.
+# 1 second = 20 ticks, by default, this is set to 40 ticks = 2 seconds.
+run-time-event-every-in-ticks: 40
+
+# If set to true, this plugin will handle the server's time. If false, this will not affect the time.
+# Make sure to set gamerule doDaylightCycle to false if you have this set to true.
+handle-time: false
+
+# This determines how fast the time runs. Has a purpose only if handle-time is set to true. 
+# By default, we pass 1 second every 5 ticks. This means that in 1 second in real life, 4 pass in game. 
+one-second-in-ticks-is: 5
+
+# Set this to true if you would like the day to be displayed as text.
+# If you want both the day of the month & the day of the week, set to true & use {rawday} for the number.
+day-as-words: false
+days:
+   monday: Monday
+   tuesday: Tuesday
+   wednesday: Wednesday
+   thursday: Thursday
+   friday: Friday
+   saturday: Saturday
+   sunday: Sunday
+
+# Set this to true if you would like the months to be displayed as text.
+# If you want both the month as a text & number, set to true & use {rawmonth} for the number.
+month-as-words: false
+months:
+   january: January
+   february: February
+   march: March
+   april: April
+   may: May
+   june: June
+   july: July
+   august: August
+   september: September
+   october: October
+   november: November
+   december: December
+
+default-time:
+   second: 0
+   minute: 0
+   hour: 0
+   day: 1
+   month: 1
+   year: 2000
+
+# Remove the format entirely, or comment it out, if you do not want the action bar to display.
+format: '&8[ &b&lTime &8] &f{hour}:{minute}:{second} &8[ &e&lDate &8] &f{month}/{day}/{year}'

@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>me.darwin</groupId>
+  <artifactId>openrp</artifactId>
+  <version>2.1.2f1-SNAPSHOT</version>
+  <name>OpenRP</name>
+  <description>Open-source powerful Roleplaying Engine &amp; API for Spigot.</description>
+  
+  <repositories>
+    <repository>
+        <id>spigot-repo</id>
+        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    
+    <repository>
+  		<id>mvdw-software</id>
+  		<name>MVdW Public Repositories</name>
+  		<url>http://repo.mvdw-software.be/content/groups/public/</url>
+	</repository>
+	
+	<repository>
+        <id>placeholderapi</id>
+        <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+    </repository>
+  </repositories>
+  
+  <dependencies>
+    <dependency>
+    	<groupId>org.spigotmc</groupId>
+        <artifactId>spigot</artifactId>
+        <version>1.13-R0.1-SNAPSHOT</version>
+        <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+  		<groupId>be.maximvdw</groupId>
+  		<artifactId>MVdWPlaceholderAPI</artifactId>
+  		<version>2.1.1-SNAPSHOT</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>me.clip</groupId>
+        <artifactId>placeholderapi</artifactId>
+        <version>2.10.9</version>
+        <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  
+  <build>
+  	<finalName>OpenRP</finalName>
+  	<sourceDirectory>src/main/java</sourceDirectory>
+  	<resources>
+  		<resource>
+  			<targetPath>.</targetPath>
+  			<filtering>true</filtering>
+  			<directory>src/main/resources</directory>
+  		</resource>
+  	</resources>
+  	
+  	<plugins>
+  	  <plugin>
+  	  	<artifactId>maven-compiler-plugin</artifactId>
+  	  	<version>2.3.2</version>
+  	  	<configuration>
+  	  		<source>1.8</source>
+  	  		<target>1.8</target>
+  	  	</configuration>
+  	  </plugin>
+    </plugins>
+  </build>
+  
+</project>

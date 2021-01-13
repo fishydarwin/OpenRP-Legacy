@@ -1,0 +1,67 @@
+# OpenRP Descriptions
+
+use-perm: orpdesc.set
+override-perm: orpdesc.override
+check-perm: orpdesc.check
+bypass-cooldown-perm: orpdesc.bypasscooldown
+
+fields:
+   name:
+      allowed-values:
+         type: contains
+         case-sensitive: false
+         value: "abcdefghijklmnopqrstuvwxyz.-' "
+      length:
+         minimum: 3
+         maximum: 24
+      color-code-perm: orpdesc.name.color
+      cooldown: 10
+      default-value: <?>
+   description:
+      allowed-values:
+         type: without
+         case-sensitive: false
+         value: null
+      length:
+         minimum: 3
+      color-code-perm: orpdesc.desc.color
+      cooldown: 10
+      default-value: No description set
+   gender:
+      allowed-values:
+         type: list
+         case-sensitive: true
+         value:
+         - Male
+         - Female
+         - Other
+      color-code-perm: orpdesc.desc.color
+      cooldown: 10
+      default-value: Other
+   race:
+      allowed-values:
+         type: locked
+      default-value: Human
+#  example-field:
+#     allowed-values:
+#        type: contains
+#        case-sensitive: false
+#        value: 0123456789
+#     color-code-perm: example.color.perm
+#     cooldown: 42
+#     default-value: Example Field
+# You can use this field in PlaceholderAPI/MVdWPlaceholderAPI via %orpdesc_example-field% or {orpdesc_example-field}, depending.
+# Some plugins may directly link with OpenRP Descriptions, and in that case use {orpdesc_example-field} as the placeholder.
+
+# Can a player be right clicked for you to see their description?
+right-click-player-to-view-description: true
+# Do players have to crouch in order to be able to right click a player for their description?
+must-crouch-to-view-description: true
+# What does the description look like?
+description-format:
+- "&e{player}'s &aDescription:"
+- "&bName: {orpdesc_name}"
+- "&bGender: {orpdesc_gender}"
+- "&bRace: {orpdesc_race}"
+- "&bDescription:"
+- "&f{orpdesc_description}"
