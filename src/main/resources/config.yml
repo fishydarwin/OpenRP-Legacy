@@ -1,0 +1,13 @@
+# OpenRP Main Configuration.
+
+admin-perm: "openrp.admin"
+
+# Which modules to enable?
+enabled:
+- chat
+- descriptions
+- rolls
+- time
+
+# Would you like notifications for this plugin?
+auto-updates: true

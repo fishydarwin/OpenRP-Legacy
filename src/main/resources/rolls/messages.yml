@@ -1,0 +1,5 @@
+# OpenRP Rolls Messages.
+
+invalid-use: '&cInvalid use. Please try /{usage}.'
+no-use-perm: '&cYou don''t have permission to run this command.'
+limits: '&cYou must roll out of a number equal to at least {min} and not larger than {max}.'
