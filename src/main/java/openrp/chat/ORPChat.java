@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import openrp.OpenRP;
 import openrp.chat.events.ORPChatPreprintEvent;
+import openrp.chat.listeners.ActionListener;
 import openrp.chat.listeners.CommandEventListener;
 import openrp.chat.utils.ORPChatCommand;
 
@@ -249,6 +250,7 @@ public class ORPChat {
 		registerChannels();
 		plugin.getLogger().info("Registering Chat Listeners...");
 		plugin.getServer().getPluginManager().registerEvents(new CommandEventListener(plugin), plugin);
+		plugin.getServer().getPluginManager().registerEvents(new ActionListener(plugin), plugin);
 		plugin.getLogger().info("Chat Loaded!");
 	}
 

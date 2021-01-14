@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -59,6 +61,8 @@ public class OpenRP extends JavaPlugin {
 	private ORPDescriptions desc;
 	private ORPRolls rolls;
 	private ORPTime time;
+
+	private boolean canUseHex = false;
 
 	/**
 	 * Return OpenRP's Chat API.
@@ -103,6 +107,12 @@ public class OpenRP extends JavaPlugin {
 	 */
 	public FileConfiguration loadArbitraryFile(String nameOfFile, String path) {
 		File file_file = new File(getDataFolder() + File.separator + path, nameOfFile);
+		{
+			File file_test = new File(getDataFolder() + File.separator + path);
+			if (!file_test.exists()) {
+				file_test.mkdir();
+			}
+		}
 		if (!file_file.exists()) {
 			try {
 				file_file.createNewFile();
@@ -195,20 +205,35 @@ public class OpenRP extends JavaPlugin {
 
 	/**
 	 * Returns the colorized String according to the ChatColor rules, using the &
-	 * color code. Exists for convenience
+	 * color code. 1.16 addition: also handles hex codes. Exists for convenience.
 	 * 
 	 * @param input - The input String to parse.
 	 * @return The final colorized String.
 	 */
 	public String colorize(String input) {
-		return ChatColor.translateAlternateColorCodes('&', input);
+		String formatted = ChatColor.translateAlternateColorCodes('&', input);
+		if (canUseHex) {
+			return formatHexCodes(formatted);
+		}
+		return formatted;
+	}
+
+	private static final Pattern hexColorPattern = Pattern.compile("^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$");
+
+	private String formatHexCodes(String input) {
+		String value = input;
+		Matcher matcher = hexColorPattern.matcher(input);
+		while (matcher.find()) {
+			String hexcode = matcher.group();
+			String fixed = new String(new char[] { '&', hexcode.charAt(1), '&', hexcode.charAt(2), '&',
+					hexcode.charAt(3), '&', hexcode.charAt(4), '&', hexcode.charAt(5), '&', hexcode.charAt(6) });
+			value = value.replace(hexcode, "&x" + fixed);
+		}
+		return value;
 	}
 
 	/**
-	 * Gets the latest version of OpenRP.
-	 * 
-	 * @return
-	 * @return
+	 * Gets the latest version of OpenRP from SpigotMC.
 	 * 
 	 * @return A String representing the latest version.
 	 */
@@ -221,7 +246,7 @@ public class OpenRP extends JavaPlugin {
 					consumer.accept(scanner.next());
 				}
 			} catch (IOException exception) {
-				getLogger().info("Cannot look for updates: " + exception.getMessage());
+				getLogger().warning("Cannot look for updates: " + exception.getMessage());
 			}
 		});
 	}
@@ -247,6 +272,25 @@ public class OpenRP extends JavaPlugin {
 								.replace("{l}", version));
 					}
 				});
+			}
+		}
+
+		// Check for version to see if 1.16 color codes are allowed
+		{
+			String version = getServer().getBukkitVersion();
+			getLogger().info("Detected Bukkit Version: " + version);
+			String[] list = version.split("-");
+			list = list[0].split(".");
+			int i = 0;
+			i = Integer.valueOf(list[0]) + Integer.valueOf(list[1]);
+			// 1 + 13 = 14 -> 1.13
+			if (i < 14) {
+				getLogger().severe("Bukkit Version looks to be lower than 1.13, OpenRP only works on 1.13+");
+				getServer().getPluginManager().disablePlugin(this);
+			}
+			// 1 + 16 = 17 -> 1.16
+			if (i > 17) {
+				canUseHex = true;
 			}
 		}
 
@@ -300,15 +344,15 @@ public class OpenRP extends JavaPlugin {
 				getTime().registerEvents();
 			}
 		}
-		
+
 		/*
 		 * } }, 1);
 		 */
-		
-		getServer().getScheduler().runTask(plugin, new Runnable(){
+
+		getServer().getScheduler().runTask(plugin, new Runnable() {
 			@Override
 			public void run() {
-				
+
 				// Checking for Soft-Dependencies.
 				if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
 					getLogger().info("Found PlaceholderAPI. Hooking into it!");
@@ -318,7 +362,7 @@ public class OpenRP extends JavaPlugin {
 					getLogger().info("Found MVdWPlaceholderAPI. Hooking into it!");
 					api_mvdw = true;
 				}
-				
+
 				plugin.getLogger().info("Registering Descriptions Expansions...");
 				if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
 					PAPI_Descriptions papi_ORPDESC = new PAPI_Descriptions(plugin);
@@ -327,7 +371,7 @@ public class OpenRP extends JavaPlugin {
 				if (plugin.getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
 					new MVdW_Descriptions(plugin, plugin.getDesc());
 				}
-				
+
 			}
 		});
 
