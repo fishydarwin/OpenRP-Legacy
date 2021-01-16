@@ -1,48 +1,86 @@
 package openrp.chat.listeners;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import net.md_5.bungee.api.ChatColor;
 import openrp.OpenRP;
+import openrp.chat.ORPChat;
 import openrp.chat.events.ORPChatEvent;
 
+/**
+ * A listener built into OpenRP that handles *action*-type messages. This is due
+ * to the large amount of requests for doing something like this.
+ * 
+ * @author Darwin Jonathan
+ *
+ */
 public class ActionListener implements Listener {
-	
-	private OpenRP plugin;
-	
-	public ActionListener(OpenRP plugin) {
-		this.plugin = plugin;
-		channelsWithActions = plugin.getChat().getConfig().getStringList("channels-with-actions");
-	}
-	
-	List<String> channelsWithActions = new ArrayList<>();
 
-	private String SPECIAL_CHARACTER = Pattern.quote("*"); // fixes regex issues, dont ask
+	public ActionListener(OpenRP plugin, ORPChat chat) {
+		channelsWithActions = new HashMap<>();
+		for (String channel : chat.getChannels().keySet()) {
+			if (chat.getConfig().isSet("channels." + channel + ".action")) {
+
+				plugin.getLogger().info("Channel " + channel + " inhibits action behaviour. Implementing. . .");
+
+				String[] list = new String[3];
+
+				String symbol = chat.getConfig().getString("channels." + channel + ".action.symbol", "*");
+
+				String prefix = plugin.colorize(chat.getConfig()
+						.getString("channels." + channel + ".action.replacement.outside-of-actions", "&f"));
+				String suffix = plugin.colorize(
+						chat.getConfig().getString("channels." + channel + ".action.replacement.for-actions", "&e*"));
+
+				list[0] = symbol;
+				list[1] = prefix;
+				list[2] = suffix;
+
+				channelsWithActions.put(channel, list);
+			}
+		}
+	}
+
+	Map<String, String[]> channelsWithActions = new HashMap<>();
+
 	@EventHandler
 	public void onChatMessage(ORPChatEvent event) {
-	  if (!channelsWithActions.contains(event.getChannel())) { return; }
-	  if (!event.getMessage().contains(SPECIAL_CHARACTER)) { return; }
-	  if (event.getMessage().split(SPECIAL_CHARACTER).length <= 2) { return; }
+		if (!channelsWithActions.containsKey(event.getChannel())) {
+			return;
+		}
 
-	  String assemble = "";
-	  { // this { } is for better memory
-	    boolean isInsideAction = false;
-	    for (String substring : event.getMessage().split(SPECIAL_CHARACTER)) {
-	      if (isInsideAction == false) {
-	        assemble += " " + ChatColor.WHITE + substring;
-	      } else {
-	        assemble += " " + ChatColor.YELLOW + SPECIAL_CHARACTER + substring + SPECIAL_CHARACTER; 
-	      }
-	      isInsideAction = !isInsideAction; // flip value
-	    }
-	  }
-	  assemble = assemble.replaceFirst(" ", ""); // don't forget about this
-	  event.setMessage(assemble);
+		if (!event.getMessage().contains(channelsWithActions.get(event.getChannel())[0])) {
+			return;
+		}
+
+		// Ensures fixed regular expression pattern
+		String SPECIAL_CHARACTER = Pattern.quote(channelsWithActions.get(event.getChannel())[0]);
+		{
+			String test = event.getMessage() + " ";
+			if (test.split(SPECIAL_CHARACTER).length <= 2) {
+				return;
+			}
+		}
+
+		String assemble = "";
+		{
+			boolean isInsideAction = false;
+			String prefix = channelsWithActions.get(event.getChannel())[1];
+			String suffix = channelsWithActions.get(event.getChannel())[2];
+			for (String substring : event.getMessage().split(SPECIAL_CHARACTER)) {
+				if (isInsideAction == false) {
+					assemble += prefix + substring;
+				} else {
+					assemble += suffix + substring + suffix;
+				}
+				isInsideAction = !isInsideAction; // Flip value here
+			}
+		}
+		event.setMessage(assemble);
 	}
 
 }

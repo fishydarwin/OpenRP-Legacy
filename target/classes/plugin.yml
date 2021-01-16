@@ -1,5 +1,5 @@
 name: OpenRP
-version: 2.1.2f1
+version: 2.2
 
 description: Open-source powerful Roleplaying Engine & API for Spigot.
 author: darwj
@@ -10,7 +10,7 @@ website: http://www.untold-potential.eu
 
 main: openrp.OpenRP
 api-version: 1.13
-soft-depend:
+softdepend:
 - PlaceholderAPI
 - MVdWPlaceholderAPI
 

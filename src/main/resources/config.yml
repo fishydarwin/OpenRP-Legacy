@@ -1,8 +1,18 @@
 # OpenRP Main Configuration.
 
+# Need help? Learn to set me up here! Navigate via the pages on the right side.
+# https://github.com/fishydarwin/OpenRP/wiki
+
+# Permission for /openrp.
 admin-perm: "openrp.admin"
 
-# Which modules to enable?
+# The modules that you want enabled
+# To remove a module just delete that line entirely
+
+# chat - Simple channels that you can customize & add upon
+# descriptions - Custom character menu & right-click players for description
+# rolls - Easy to use roll command essential to any roleplay server
+# time - Changeable immersive roleplay date & time
 enabled:
 - chat
 - descriptions

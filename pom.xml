@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.darwin</groupId>
   <artifactId>openrp</artifactId>
-  <version>2.1.2f1-SNAPSHOT</version>
+  <version>2.2-SNAPSHOT</version>
   <name>OpenRP</name>
   <description>Open-source powerful Roleplaying Engine &amp; API for Spigot.</description>
   

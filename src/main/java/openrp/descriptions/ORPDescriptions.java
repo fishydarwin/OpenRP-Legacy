@@ -213,23 +213,28 @@ public class ORPDescriptions {
 		plugin.getLogger().info("Registering Descriptions Listeners...");
 		plugin.getServer().getPluginManager().registerEvents(new DescriptionCheckListener(plugin), plugin);
 		plugin.getLogger().info("Registering Descriptions Expansions...");
-		plugin.getLogger().info("Running Descriptions Default Info Completer...");
-		for (Player p : plugin.getServer().getOnlinePlayers()) {
-			if (plugin.getDesc().getFields().isEmpty()) {
-				break;
-			}
-			for (String s : plugin.getDesc().getFields()) {
-				if (!plugin.getDesc().isFieldSet(p, s)) {
-					String field = s;
-					String value = plugin.getDesc().getConfig().getString("fields." + s + ".default-value");
-					ORPDescriptionsChangeEvent changeevent = new ORPDescriptionsChangeEvent(p.getUniqueId(), field,
-							value);
-					if (!changeevent.isCancelled()) {
-						plugin.getDesc().setField(p, changeevent.getValue(), changeevent.getField());
+		plugin.getLogger().info("Running Descriptions Default Info Completer. This is Async, but might take a bit...");
+		plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
+			@Override
+			public void run() {
+				for (Player p : plugin.getServer().getOnlinePlayers()) {
+					if (plugin.getDesc().getFields().isEmpty()) {
+						break;
+					}
+					for (String s : plugin.getDesc().getFields()) {
+						if (!plugin.getDesc().isFieldSet(p, s)) {
+							String field = s;
+							String value = plugin.getDesc().getConfig().getString("fields." + s + ".default-value");
+							ORPDescriptionsChangeEvent changeevent = new ORPDescriptionsChangeEvent(p.getUniqueId(),
+									field, value);
+							if (!changeevent.isCancelled()) {
+								plugin.getDesc().setField(p, changeevent.getValue(), changeevent.getField());
+							}
+						}
 					}
 				}
 			}
-		}
+		}, 1L);
 		plugin.getLogger().info("Descriptions Loaded!");
 	}
 

@@ -250,7 +250,7 @@ public class ORPChat {
 		registerChannels();
 		plugin.getLogger().info("Registering Chat Listeners...");
 		plugin.getServer().getPluginManager().registerEvents(new CommandEventListener(plugin), plugin);
-		plugin.getServer().getPluginManager().registerEvents(new ActionListener(plugin), plugin);
+		plugin.getServer().getPluginManager().registerEvents(new ActionListener(plugin, this), plugin);
 		plugin.getLogger().info("Chat Loaded!");
 	}
 

@@ -38,6 +38,8 @@ import openrp.descriptions.expansions.MVdW_Descriptions;
 import openrp.descriptions.expansions.PAPI_Descriptions;
 import openrp.rolls.ORPRolls;
 import openrp.time.ORPTime;
+import openrp.time.expansions.MVdW_Time;
+import openrp.time.expansions.PAPI_Time;
 import openrp.time.utils.TimeHandler;
 
 /**
@@ -218,13 +220,14 @@ public class OpenRP extends JavaPlugin {
 		return formatted;
 	}
 
-	private static final Pattern hexColorPattern = Pattern.compile("^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$");
+	private static final Pattern hexColorPattern = Pattern.compile("((\\B#)(([0-9]|[a-z]){6}))");
 
 	private String formatHexCodes(String input) {
 		String value = input;
 		Matcher matcher = hexColorPattern.matcher(input);
 		while (matcher.find()) {
 			String hexcode = matcher.group();
+			hexcode = hexcode.toLowerCase();
 			String fixed = new String(new char[] { '&', hexcode.charAt(1), '&', hexcode.charAt(2), '&',
 					hexcode.charAt(3), '&', hexcode.charAt(4), '&', hexcode.charAt(5), '&', hexcode.charAt(6) });
 			value = value.replace(hexcode, "&x" + fixed);
@@ -259,7 +262,12 @@ public class OpenRP extends JavaPlugin {
 
 		// Load the basic stuff.
 		saveDefaultConfig();
-		saveResource("messages.yml", false);
+		{
+			File file = new File(getDataFolder(), "messages.yml");
+			if (!file.exists()) {
+				saveResource("messages.yml", false);
+			}
+		}
 
 		reloadMessages();
 
@@ -279,17 +287,18 @@ public class OpenRP extends JavaPlugin {
 		{
 			String version = getServer().getBukkitVersion();
 			getLogger().info("Detected Bukkit Version: " + version);
-			String[] list = version.split("-");
-			list = list[0].split(".");
+			String[] list = version.split(Pattern.quote("-"));
+			String[] newList = list[0].split(Pattern.quote("."));
 			int i = 0;
-			i = Integer.valueOf(list[0]) + Integer.valueOf(list[1]);
+			i = Integer.valueOf(newList[0]) + Integer.valueOf(newList[1]);
 			// 1 + 13 = 14 -> 1.13
-			if (i < 14) {
+			if (i < 14 && Integer.valueOf(newList[0]) < 2) {
 				getLogger().severe("Bukkit Version looks to be lower than 1.13, OpenRP only works on 1.13+");
 				getServer().getPluginManager().disablePlugin(this);
 			}
 			// 1 + 16 = 17 -> 1.16
-			if (i > 17) {
+			if (i >= 17 && Integer.valueOf(newList[0]) < 2) {
+				getLogger().info("Bukkit Version is 1.16+, hex color code support enabled!");
 				canUseHex = true;
 			}
 		}
@@ -349,31 +358,38 @@ public class OpenRP extends JavaPlugin {
 		 * } }, 1);
 		 */
 
-		getServer().getScheduler().runTask(plugin, new Runnable() {
-			@Override
-			public void run() {
+		/*
+		 * getServer().getScheduler().runTask(plugin, new Runnable() {
+		 * 
+		 * @Override public void run() {
+		 */
 
-				// Checking for Soft-Dependencies.
-				if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-					getLogger().info("Found PlaceholderAPI. Hooking into it!");
-					api_papi = true;
-				}
-				if (getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-					getLogger().info("Found MVdWPlaceholderAPI. Hooking into it!");
-					api_mvdw = true;
-				}
+		// Checking for Soft-Dependencies.
+		if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+			getLogger().info("Found PlaceholderAPI. Hooking into it!");
+			api_papi = true;
+		}
+		if (getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
+			getLogger().info("Found MVdWPlaceholderAPI. Hooking into it!");
+			api_mvdw = true;
+		}
 
-				plugin.getLogger().info("Registering Descriptions Expansions...");
-				if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-					PAPI_Descriptions papi_ORPDESC = new PAPI_Descriptions(plugin);
-					papi_ORPDESC.register();
-				}
-				if (plugin.getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-					new MVdW_Descriptions(plugin, plugin.getDesc());
-				}
+		plugin.getLogger().info("Registering Descriptions Expansions...");
+		plugin.getLogger().info("Registering Time Expansions...");
+		if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+			PAPI_Descriptions papi_ORPDESC = new PAPI_Descriptions(plugin);
+			papi_ORPDESC.register();
+			PAPI_Time papi_ORPTIME = new PAPI_Time(plugin);
+			papi_ORPTIME.register();
+		}
+		if (plugin.getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
+			new MVdW_Descriptions(plugin, plugin.getDesc());
+			new MVdW_Time(plugin, plugin.getTime());
+		}
 
-			}
-		});
+		/*
+		 * } });
+		 */
 
 	}
 
