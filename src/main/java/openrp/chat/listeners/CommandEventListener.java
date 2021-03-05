@@ -1,6 +1,7 @@
 package openrp.chat.listeners;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -27,7 +28,8 @@ public class CommandEventListener implements Listener {
 		this.plugin = plugin;
 	}
 
-	@EventHandler
+	// Highest priority because - it has the final say: "check if event is cancelled by someone else first"
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onChatCommandSent(PlayerCommandPreprocessEvent event) {
 
 		// Fast-checking if its our command is actually an OpenRP Chat Command. Just to
@@ -139,8 +141,9 @@ public class CommandEventListener implements Listener {
 		});
 
 	}
-
-	@EventHandler
+	
+	// Highest priority because - it has the final say: "check if event is cancelled by someone else first"
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onChatMessageInDefaultChannel(AsyncPlayerChatEvent event) {
 
 		// Fast check to make sure there is a default channel

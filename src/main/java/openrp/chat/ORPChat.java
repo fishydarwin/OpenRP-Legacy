@@ -12,9 +12,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import openrp.OpenRP;
+import openrp.chat.cmds.Command_CHANNELSWITCH;
+import openrp.chat.cmds.Command_CHANNELTOGGLE;
 import openrp.chat.events.ORPChatPreprintEvent;
 import openrp.chat.listeners.ActionListener;
 import openrp.chat.listeners.CommandEventListener;
+import openrp.chat.listeners.ToggleSwitchListener;
 import openrp.chat.utils.ORPChatCommand;
 
 /**
@@ -251,6 +254,13 @@ public class ORPChat {
 		plugin.getLogger().info("Registering Chat Listeners...");
 		plugin.getServer().getPluginManager().registerEvents(new CommandEventListener(plugin), plugin);
 		plugin.getServer().getPluginManager().registerEvents(new ActionListener(plugin, this), plugin);
+		plugin.getServer().getPluginManager().registerEvents(new ToggleSwitchListener(plugin), plugin);
+		Command_CHANNELTOGGLE handler_CHTG = new Command_CHANNELTOGGLE(plugin);
+		plugin.getCommand("channeltoggle").setExecutor(handler_CHTG);
+		plugin.getCommand("channeltoggle").setTabCompleter(handler_CHTG);
+		Command_CHANNELSWITCH handler_CHSW = new Command_CHANNELSWITCH(plugin);
+		plugin.getCommand("channelswitch").setExecutor(handler_CHSW);
+		plugin.getCommand("channelswitch").setTabCompleter(handler_CHSW);
 		plugin.getLogger().info("Chat Loaded!");
 	}
 

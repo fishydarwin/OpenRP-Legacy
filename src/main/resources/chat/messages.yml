@@ -3,3 +3,14 @@
 invalid-use: '&cInvalid use. Please try /{usage}.'
 no-use-perm: '&cYou are not allowed to speak in this chat channel.'
 cooldown: '&cYou must wait {time} seconds before speaking in this chat channel again.'
+
+run-as-player: '&cPlease run this command as a player.'
+toggle-switch-disabled: '&cThis feature is disabled.'
+invalid-channel: '&cYou cannot target that channel. Allowed channels in this command: {channels}.'
+already-switched: '&cYou are already switched to that channel.'
+
+switched: '&aSwitched to {channel}.'
+toggled-on: '&aToggled {channel} visibility ON.'
+toggled-off: '&eToggled {channel} visibility OFF.'
+
+cant-use-when-toggled-off: '&cYou cannot use this chat channel because you toggled it off. Please toggle it back on!'

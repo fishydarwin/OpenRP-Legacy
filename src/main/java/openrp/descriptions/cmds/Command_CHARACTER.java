@@ -68,7 +68,8 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 														.replace("{value}", v)));
 
 										add.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-												new ComponentBuilder(plugin.colorize("&a&lO")).create()));
+												new ComponentBuilder(plugin.colorize(plugin.getDesc().getMessages()
+														.getString("field-manipulation.hover", "&a&lO"))).create()));
 										add.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
 												"/character set " + s + " " + v));
 
@@ -84,8 +85,11 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 									TextComponent add = new TextComponent(TextComponent.fromLegacyText(
 											plugin.getDesc().getMessage("field-manipulation.change.single")));
 
-									add.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-											new ComponentBuilder(plugin.colorize("&a&lO")).create()));
+									add.setHoverEvent(
+											new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+													new ComponentBuilder(plugin.colorize(plugin.getDesc().getMessages()
+															.getString("field-manipulation.hover", "&a&lO")))
+																	.create()));
 									add.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
 											"/character set " + s + " "));
 

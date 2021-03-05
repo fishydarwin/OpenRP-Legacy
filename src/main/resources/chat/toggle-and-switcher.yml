@@ -1,0 +1,29 @@
+# OpenRP Chat Channel Toggler and Switcher
+
+# Set to "true" to enable this feature.
+# Toggling a channel means a player can show/hide 
+# a channel from their chat!
+# False by default for compatibility reasons.
+enable-channel-toggler: false
+
+# What channels can players toggle on/off?
+# Use the *identifiers* of the channels!
+toggleable-channels:
+- local-out-of-character
+- out-of-character
+#- other-channel
+#- etc
+
+# Set to "true" to enable this feature.
+# Switching to a channel changes the channel that is used 
+# when a player types in chat with no command.
+# False by default for compatibility reasons.
+enable-channel-switcher: false
+
+# What channels can players switch to/from?
+# Use the *identifiers* of the channels!
+switchable-channels:
+- in-character
+- local-out-of-character
+#- other-channel
+#- etc

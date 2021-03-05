@@ -1,11 +1,10 @@
 name: OpenRP
-version: 2.2
+version: 2.3
 
 description: Open-source powerful Roleplaying Engine & API for Spigot.
 author: darwj
 authors:
 - darwj
-- theatrekids
 website: http://www.untold-potential.eu
 
 main: openrp.OpenRP
@@ -19,6 +18,16 @@ commands:
       description: OpenRP Utility Command.
       aliases:
       - orp
+   channeltoggle:
+      description: Toggle a channel on or off!
+      aliases:
+      - chtoggle
+      - chtg
+   channelswitch:
+      description: Switch to a different channel!
+      aliases:
+      - chswitch
+      - chsw
    character:
       description: Change information about your character!
       aliases:

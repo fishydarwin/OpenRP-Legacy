@@ -13,6 +13,7 @@ field-manipulation:
       single: '&a&l[CLICK TO CHANGE]'
       list: '&a&l// &7{value} '
       locked: '&c[LOCKED]'
+   hover: '&a&lO'
 
 invalid-field: '&cThat field doesn''t exist!'
 invalid-player: '&cThat user doesn''t exist!'
