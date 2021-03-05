@@ -40,7 +40,8 @@ public class Command_CHANNELTOGGLE implements CommandExecutor, TabCompleter {
 
 		if (!ToggleSwitchListener.getToggleChannels().contains(args[0])) {
 			sender.sendMessage(plugin.getChat().getMessage("invalid-channel").replace("{channels}",
-					ToggleSwitchListener.getSwitchChannels().toString().replace("[", "").replace("]", "")));
+					ToggleSwitchListener.getToggleChannels().toString().replace("[", "").replace("]", "")));
+			return true;
 		}
 
 		List<String> ch = ToggleSwitchListener.getToggleList((Player) sender);

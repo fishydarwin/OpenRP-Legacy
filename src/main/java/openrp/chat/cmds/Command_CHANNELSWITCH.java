@@ -44,10 +44,19 @@ public class Command_CHANNELSWITCH implements CommandExecutor, TabCompleter {
 		if (!ToggleSwitchListener.getSwitchChannels().contains(args[0]) && !args[0].equals(defaultChannel)) {
 			sender.sendMessage(plugin.getChat().getMessage("invalid-channel").replace("{channels}",
 					ToggleSwitchListener.getSwitchChannels().toString().replace("[", "").replace("]", "")));
+			return true;
 		}
 
-		if (ToggleSwitchListener.getSwitchChannel((Player) sender).equals(args[0])) {
-			sender.sendMessage(plugin.getChat().getMessage("already-switched"));
+		if (ToggleSwitchListener.getSwitchChannel((Player) sender) != null) {
+			if (ToggleSwitchListener.getSwitchChannel((Player) sender).equals(args[0])) {
+				sender.sendMessage(plugin.getChat().getMessage("already-switched"));
+				return true;
+			}
+		} else {
+			if (args[0].equals(defaultChannel)) {
+				sender.sendMessage(plugin.getChat().getMessage("already-switched"));
+				return true;
+			}
 		}
 
 		ToggleSwitchListener.setSwitchChannel((Player) sender, args[0]);

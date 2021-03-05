@@ -47,11 +47,11 @@ public class ToggleSwitchListener implements Listener {
 		switches = new HashMap<>();
 		file = new File(plugin.getDataFolder() + File.separator + "chat", "toggle-and-switcher.yml");
 		if (!file.exists()) {
-			plugin.saveResource("toggle-and-switcher.yml", false);
+			plugin.saveResource("chat/toggle-and-switcher.yml", false);
 		}
 		configfile = YamlConfiguration.loadConfiguration(file);
 		useToggles = configfile.getBoolean("enable-channel-toggler", false);
-		useSwitches = configfile.getBoolean("enable-channel-switches", false);
+		useSwitches = configfile.getBoolean("enable-channel-switcher", false);
 		defaultChannel = plugin.getChat().getConfig().getString("default", null);
 		toggleChannels = configfile.isSet("toggleable-channels") ? configfile.getStringList("toggleable-channels")
 				: new ArrayList<String>();
@@ -68,11 +68,11 @@ public class ToggleSwitchListener implements Listener {
 	}
 
 	public static final List<String> getToggleChannels() {
-		return toggleChannels;
+		return new ArrayList<>(toggleChannels);
 	}
 
 	public static final List<String> getSwitchChannels() {
-		return switchChannels;
+		return new ArrayList<>(switchChannels);
 	}
 
 	public static void setToggleList(Player p, List<String> l) {
@@ -102,7 +102,7 @@ public class ToggleSwitchListener implements Listener {
 		if (!useToggles) {
 			return;
 		}
-		if (toggles.containsKey(event.getPlayer())) {
+		if (!toggles.containsKey(event.getPlayer())) {
 			return;
 		}
 		if (!toggles.get(event.getPlayer()).contains(event.getChannel())) {
