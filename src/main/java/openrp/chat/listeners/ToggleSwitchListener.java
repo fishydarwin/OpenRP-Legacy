@@ -33,8 +33,6 @@ public class ToggleSwitchListener implements Listener {
 	private File file;
 	private FileConfiguration configfile;
 
-	private String defaultChannel;
-
 	private static List<String> toggleChannels;
 	private static List<String> switchChannels;
 
@@ -52,7 +50,6 @@ public class ToggleSwitchListener implements Listener {
 		configfile = YamlConfiguration.loadConfiguration(file);
 		useToggles = configfile.getBoolean("enable-channel-toggler", false);
 		useSwitches = configfile.getBoolean("enable-channel-switcher", false);
-		defaultChannel = plugin.getChat().getConfig().getString("default", null);
 		toggleChannels = configfile.isSet("toggleable-channels") ? configfile.getStringList("toggleable-channels")
 				: new ArrayList<String>();
 		switchChannels = configfile.isSet("switchable-channels") ? configfile.getStringList("switchable-channels")
@@ -125,10 +122,7 @@ public class ToggleSwitchListener implements Listener {
 		if (!useSwitches) {
 			return;
 		}
-		if (defaultChannel == null) {
-			return;
-		}
-		if (!event.getChannel().equals(defaultChannel)) {
+		if (event.wasCommand()) {
 			return;
 		}
 		if (!switches.containsKey(event.getPlayer())) {
@@ -144,10 +138,11 @@ public class ToggleSwitchListener implements Listener {
 				}
 			}
 		}
-		*/
+		NOT REQUIRED SINCE wasCommand() is an option
 		if (switches.get(event.getPlayer()).equals(defaultChannel)) {
 			return;
 		}
+		*/
 		event.setChannel(switches.get(event.getPlayer()));
 	}
 

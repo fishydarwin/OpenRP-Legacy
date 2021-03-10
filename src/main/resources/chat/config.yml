@@ -15,7 +15,8 @@ channels:
    
    in-character:
       display-name: In Character Chat
-      commands: []
+      commands:
+      - ic
       use-perm: orpchat.default
       read-perm: orpchat.default
       color-code-perm: orpchat.usecolors

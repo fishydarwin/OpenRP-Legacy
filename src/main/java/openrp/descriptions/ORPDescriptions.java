@@ -82,6 +82,20 @@ public class ORPDescriptions {
 		}
 		return false;
 	}
+	
+	/**
+	 * Checks to see if a field is set.
+	 * 
+	 * @param player - The UUID of the player to check for.
+	 * @param field  - The field to check.
+	 * @return True if it's set, false otherwise.
+	 */
+	public boolean isFieldSet(UUID uniqueId, String field) {
+		if (plugin.getDesc().getUserdata().isSet(uniqueId + "." + field)) {
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Sets the value of a field for a player.
@@ -213,6 +227,7 @@ public class ORPDescriptions {
 		plugin.getLogger().info("Registering Descriptions Listeners...");
 		plugin.getServer().getPluginManager().registerEvents(new DescriptionCheckListener(plugin), plugin);
 		plugin.getLogger().info("Registering Descriptions Expansions...");
+		
 		plugin.getLogger().info("Running Descriptions Default Info Completer. This is Async, but might take a bit...");
 		plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
 			@Override
@@ -334,5 +349,5 @@ public class ORPDescriptions {
 	public FileConfiguration getUserdata() {
 		return userdata;
 	}
-
+	
 }

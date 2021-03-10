@@ -17,11 +17,21 @@ public class ORPChatEvent extends Event implements Cancellable {
 	private final Player player;
 	private String message;
 	private String channel;
+	private final boolean wasCommand;
 	
+	@Deprecated
 	public ORPChatEvent(Player player, String message, String channel) {
 		this.player = player;
 		this.message = message;
 		this.channel = channel;
+		this.wasCommand = false;
+	}
+	
+	public ORPChatEvent(Player player, String message, String channel, boolean wasCommand) {
+		this.player = player;
+		this.message = message;
+		this.channel = channel;
+		this.wasCommand = wasCommand;
 	}
 
 	private static final HandlerList HANDLERS = new HandlerList();
@@ -52,6 +62,10 @@ public class ORPChatEvent extends Event implements Cancellable {
 
 	public String getChannel() {
 		return channel;
+	}
+	
+	public boolean wasCommand() {
+		return wasCommand;
 	}
 
 	public void setMessage(String message) {

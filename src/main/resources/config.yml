@@ -21,3 +21,6 @@ enabled:
 
 # Would you like notifications for this plugin?
 auto-updates: true
+
+# Set to false to disable OpenRP registering its placeholders into MVdWPlaceholderAPI.
+use-mvdw: true

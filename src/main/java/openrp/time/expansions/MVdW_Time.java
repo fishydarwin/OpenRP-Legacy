@@ -7,14 +7,16 @@ import openrp.time.utils.TimeHandler;
 public class MVdW_Time {
 
 	public MVdW_Time(OpenRP plugin, ORPTime time) {
-		
+
 		be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "orptime_world_second",
 				new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 					@Override
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {
 						for (TimeHandler th : plugin.getTime().getTimes()) {
 							if (th.getWorld().equals(event.getPlayer().getLocation().getWorld())) {
-								return ((Integer) th.getSecond()).toString();
+								String s = ((Integer) th.getSecond()).toString();
+								s = th.getSecond() < 10 ? "0" + s : s;
+								return s;
 							}
 						}
 						return "";
@@ -26,7 +28,9 @@ public class MVdW_Time {
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {
 						for (TimeHandler th : plugin.getTime().getTimes()) {
 							if (th.getWorld().equals(event.getPlayer().getLocation().getWorld())) {
-								return ((Integer) th.getMinute()).toString();
+								String s = ((Integer) th.getMinute()).toString();
+								s = th.getMinute() < 10 ? "0" + s : s;
+								return s;
 							}
 						}
 						return "";
@@ -38,7 +42,9 @@ public class MVdW_Time {
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {
 						for (TimeHandler th : plugin.getTime().getTimes()) {
 							if (th.getWorld().equals(event.getPlayer().getLocation().getWorld())) {
-								return ((Integer) th.getHour()).toString();
+								String s = ((Integer) th.getHour()).toString();
+								s = th.getHour() < 10 ? "0" + s : s;
+								return s;
 							}
 						}
 						return "";
@@ -50,7 +56,9 @@ public class MVdW_Time {
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {
 						for (TimeHandler th : plugin.getTime().getTimes()) {
 							if (th.getWorld().equals(event.getPlayer().getLocation().getWorld())) {
-								return ((Integer) th.getDay()).toString();
+								String s = ((Integer) th.getDay()).toString();
+								s = th.getDay() < 10 ? "0" + s : s;
+								return s;
 							}
 						}
 						return "";
@@ -62,7 +70,9 @@ public class MVdW_Time {
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {
 						for (TimeHandler th : plugin.getTime().getTimes()) {
 							if (th.getWorld().equals(event.getPlayer().getLocation().getWorld())) {
-								return ((Integer) th.getMonth()).toString();
+								String s = ((Integer) th.getMonth()).toString();
+								s = th.getMonth() < 10 ? "0" + s : s;
+								return s;
 							}
 						}
 						return "";
@@ -82,42 +92,58 @@ public class MVdW_Time {
 				});
 
 		for (TimeHandler th : time.getTimes()) {
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "orptime_in_" + th.getWorld().getName() + "_second",
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin,
+					"orptime_in_" + th.getWorld().getName() + "_second",
 					new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 						@Override
 						public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {
-							return ((Integer) th.getSecond()).toString();
+							String s = ((Integer) th.getSecond()).toString();
+							s = th.getSecond() < 10 ? "0" + s : s;
+							return s;
 						}
 					});
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "orptime_in_" + th.getWorld().getName() + "_minute",
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin,
+					"orptime_in_" + th.getWorld().getName() + "_minute",
 					new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 						@Override
 						public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {
-							return ((Integer) th.getMinute()).toString();
+							String s = ((Integer) th.getMinute()).toString();
+							s = th.getMinute() < 10 ? "0" + s : s;
+							return s;
 						}
 					});
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "orptime_in_" + th.getWorld().getName() + "_hour",
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin,
+					"orptime_in_" + th.getWorld().getName() + "_hour",
 					new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 						@Override
 						public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {
-							return ((Integer) th.getHour()).toString();
+							String s = ((Integer) th.getHour()).toString();
+							s = th.getHour() < 10 ? "0" + s : s;
+							return s;
 						}
 					});
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "orptime_in_" + th.getWorld().getName() + "_day",
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin,
+					"orptime_in_" + th.getWorld().getName() + "_day",
 					new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 						@Override
 						public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {
-							return ((Integer) th.getDay()).toString();
+							String s = ((Integer) th.getDay()).toString();
+							s = th.getDay() < 10 ? "0" + s : s;
+							return s;
 						}
 					});
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "orptime_in_" + th.getWorld().getName() + "_month",
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin,
+					"orptime_in_" + th.getWorld().getName() + "_month",
 					new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 						@Override
 						public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {
-							return ((Integer) th.getMonth()).toString();
+							String s = ((Integer) th.getMonth()).toString();
+							s = th.getMonth() < 10 ? "0" + s : s;
+							return s;
 						}
 					});
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, "orptime_in_" + th.getWorld().getName() + "_year",
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin,
+					"orptime_in_" + th.getWorld().getName() + "_year",
 					new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 						@Override
 						public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent event) {

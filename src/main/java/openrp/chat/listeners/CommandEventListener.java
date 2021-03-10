@@ -126,7 +126,7 @@ public class CommandEventListener implements Listener {
 			@Override
 			public void run() {
 
-				ORPChatEvent chatevent = new ORPChatEvent(event.getPlayer(), fmsg, fchannel);
+				ORPChatEvent chatevent = new ORPChatEvent(event.getPlayer(), fmsg, fchannel, true);
 				plugin.getServer().getPluginManager().callEvent(chatevent);
 
 				// Let's see if anyone cancelled this event...
@@ -209,7 +209,7 @@ public class CommandEventListener implements Listener {
 		plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
 			@Override
 			public void run() {
-				ORPChatEvent chatevent = new ORPChatEvent(event.getPlayer(), fmsg, channel);
+				ORPChatEvent chatevent = new ORPChatEvent(event.getPlayer(), fmsg, channel, false);
 				plugin.getServer().getPluginManager().callEvent(chatevent);
 
 				// Let's see if anyone cancelled this event...

@@ -1,5 +1,6 @@
 package openrp.descriptions.expansions;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -37,7 +38,7 @@ public class PAPI_Descriptions extends PlaceholderExpansion {
 	public String getVersion() {
 		return plugin.getDescription().getVersion();
 	}
-
+	
 	@Override
 	public String onPlaceholderRequest(Player player, String identifier) {
 
@@ -47,6 +48,24 @@ public class PAPI_Descriptions extends PlaceholderExpansion {
 
 		if (plugin.getDesc().getFields().contains(identifier)) {
 			if (plugin.getDesc().isFieldSet(player, identifier)) {
+				return plugin.getDesc().getUserdata().getString(player.getUniqueId().toString() + "." + identifier);
+			} else {
+				return plugin.getDesc().getConfig().getString("fields." + identifier + ".default-value");
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public String onRequest(OfflinePlayer player, String identifier) {
+
+		if (player == null) {
+			return "";
+		}
+
+		if (plugin.getDesc().getFields().contains(identifier)) {
+			if (plugin.getDesc().isFieldSet(player.getUniqueId(), identifier)) {
 				return plugin.getDesc().getUserdata().getString(player.getUniqueId().toString() + "." + identifier);
 			} else {
 				return plugin.getDesc().getConfig().getString("fields." + identifier + ".default-value");

@@ -359,7 +359,8 @@ public class OpenRP extends JavaPlugin {
 		 */
 
 		/*
-		 * getServer().getScheduler().runTask(plugin, new Runnable() {
+		 * Probably unneeded. getServer().getScheduler().runTask(plugin, new Runnable()
+		 * {
 		 * 
 		 * @Override public void run() {
 		 */
@@ -383,8 +384,10 @@ public class OpenRP extends JavaPlugin {
 			papi_ORPTIME.register();
 		}
 		if (plugin.getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-			new MVdW_Descriptions(plugin, plugin.getDesc());
-			new MVdW_Time(plugin, plugin.getTime());
+			if (plugin.getConfig().getBoolean("use-mvdw", true)) {
+				new MVdW_Descriptions(plugin, plugin.getDesc());
+				new MVdW_Time(plugin, plugin.getTime());
+			}
 		}
 
 		/*
