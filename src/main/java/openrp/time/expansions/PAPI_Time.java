@@ -42,6 +42,7 @@ public class PAPI_Time extends PlaceholderExpansion {
 		return plugin.getDescription().getVersion();
 	}
 
+	@Deprecated
 	@Override
 	public String onPlaceholderRequest(Player player, String identifier) {
 
@@ -243,7 +244,78 @@ public class PAPI_Time extends PlaceholderExpansion {
 				}
 			}
 			return null;
+		case "world_second":
+			if (plugin.getServer().getPlayer(player.getName()) == null) {
+				return "";
+			}
+			for (TimeHandler th : plugin.getTime().getTimes()) {
+				if (th.getWorld().equals(plugin.getServer().getPlayer(player.getName()).getLocation().getWorld())) {
+					String s = ((Integer) th.getSecond()).toString();
+					s = th.getSecond() < 10 ? "0" + s : s;
+					return s;
+				}
+			}
+			return "";
+		case "world_minute":
+			if (plugin.getServer().getPlayer(player.getName()) == null) {
+				return "";
+			}
+			for (TimeHandler th : plugin.getTime().getTimes()) {
+				if (th.getWorld().equals(plugin.getServer().getPlayer(player.getName()).getLocation().getWorld())) {
+					String s = ((Integer) th.getMinute()).toString();
+					s = th.getMinute() < 10 ? "0" + s : s;
+					return s;
+				}
+			}
+			return "";
+		case "world_hour":
+			if (plugin.getServer().getPlayer(player.getName()) == null) {
+				return "";
+			}
+			for (TimeHandler th : plugin.getTime().getTimes()) {
+				if (th.getWorld().equals(plugin.getServer().getPlayer(player.getName()).getLocation().getWorld())) {
+					String s = ((Integer) th.getHour()).toString();
+					s = th.getHour() < 10 ? "0" + s : s;
+					return s;
+				}
+			}
+			return "";
+		case "world_day":
+			if (plugin.getServer().getPlayer(player.getName()) == null) {
+				return "";
+			}
+			for (TimeHandler th : plugin.getTime().getTimes()) {
+				if (th.getWorld().equals(plugin.getServer().getPlayer(player.getName()).getLocation().getWorld())) {
+					String s = ((Integer) th.getDay()).toString();
+					s = th.getDay() < 10 ? "0" + s : s;
+					return s;
+				}
+			}
+			return "";
+		case "world_month":
+			if (plugin.getServer().getPlayer(player.getName()) == null) {
+				return "";
+			}
+			for (TimeHandler th : plugin.getTime().getTimes()) {
+				if (th.getWorld().equals(plugin.getServer().getPlayer(player.getName()).getLocation().getWorld())) {
+					String s = ((Integer) th.getMonth()).toString();
+					s = th.getMonth() < 10 ? "0" + s : s;
+					return s;
+				}
+			}
+			return "";
+		case "world_year":
+			if (plugin.getServer().getPlayer(player.getName()) == null) {
+				return "";
+			}
+			for (TimeHandler th : plugin.getTime().getTimes()) {
+				if (th.getWorld().equals(plugin.getServer().getPlayer(player.getName()).getLocation().getWorld())) {
+					return ((Integer) th.getYear()).toString();
+				}
+			}
+			return "";
 		}
+
 	}
 
 }

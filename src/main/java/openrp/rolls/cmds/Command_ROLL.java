@@ -87,7 +87,7 @@ public class Command_ROLL implements CommandExecutor, TabCompleter {
 			if (args.length == 1) {
 
 				if (!player.hasPermission(plugin.getRolls().getConfig().getString("alternative-rolls-use-perm"))) {
-					player.sendMessage(plugin.getRolls().getMessage("no-perm"));
+					player.sendMessage(plugin.getRolls().getMessage("no-use-perm"));
 					return true;
 				}
 
