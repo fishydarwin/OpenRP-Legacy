@@ -510,8 +510,8 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 
 				String profile = args[2];
 				if (action.equalsIgnoreCase("save")) {
-					ConfigurationSection profiles = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString());
-					if (profile != null && profiles.getKeys(false).size() >= plugin.getDesc().getConfig().getInt("max-profiles",5) && plugin.getDesc().getConfig().getInt("max-profiles",5) != -1) {
+					ConfigurationSection profiles = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString()+".profiles");
+					if (profile != null && !p.hasPermission(plugin.getConfig().getString("bypass-max-profiles-perm","orpdesc.bypassmaxprofiles")) && profiles.getKeys(false).size() >= plugin.getDesc().getConfig().getInt("max-profiles",5) && plugin.getDesc().getConfig().getInt("max-profiles",5) != -1) {
 						p.sendMessage(plugin.getDesc().getMessage("profile-max-reached","You can't have any more profiles!"));
 						return true;
 					}
