@@ -510,6 +510,13 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 
 				String profile = args[2];
 				if (action.equalsIgnoreCase("save")) {
+					ConfigurationSection profiles = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString());
+					if (profile != null && profiles.getKeys(false).size() >= plugin.getDesc().getConfig().getInt("max-profiles")) {
+						p.sendMessage(plugin.getDesc().getMessage("profile-max-reached","You can't have any more profiles!"));
+						return true;
+					}
+
+
 					ConfigurationSection fields = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString());
 					Map<String, Object> map = new HashMap<>();
 					for (String field : fields.getKeys(false)) {
