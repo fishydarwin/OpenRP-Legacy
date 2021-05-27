@@ -33,7 +33,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 		if (args.length == 0) {
 
 			if (!(sender instanceof Player)) {
-				sender.sendMessage("Please run this command as a player!");
+				sender.sendMessage(plugin.getDesc().getMessage("run-as-player"));
 				return true;
 			}
 
@@ -187,7 +187,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 			} else if (args[0].equalsIgnoreCase("check")) {
 
 				if (!(sender instanceof Player)) {
-					sender.sendMessage("Please run this command as a player!");
+					sender.sendMessage(plugin.getDesc().getMessage("run-as-player"));
 					return true;
 				}
 
@@ -229,8 +229,8 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 			} else if (args[0].equalsIgnoreCase("set")) {
 
 				if (!(sender instanceof Player)) {
-					sender.sendMessage(
-							"Please run this command as a player! Use /character override if you want to change the field of a different player!");
+					sender.sendMessage(plugin.getDesc().getMessage("run-as-player"));
+					return true;
 				}
 
 				Player player = (Player) sender;
@@ -485,7 +485,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 			} else if (args[0].equalsIgnoreCase("profile")) {
 
 				if (!(sender instanceof Player)) {
-					sender.sendMessage("Please run this command as a player! Use /character override if you want to change the field of a different player!");
+					sender.sendMessage(plugin.getDesc().getMessage("run-as-player"));
 					return true;
 				}
 
@@ -497,14 +497,14 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 				}
 
 				if (args.length < 2) {
-					p.sendMessage("Please provide save, use or delete!");
+					p.sendMessage(plugin.getDesc().getMessage("profile-usage","Please provide save, use or delete!"));
 					return true;
 				}
 
 				String action = args[1];
 
 				if (args.length < 3) {
-					p.sendMessage("Please provide a name for this profile!");
+					p.sendMessage(plugin.getDesc().getMessage("profile-require-name","Please provide a name for this profile!"));
 					return true;
 				}
 
@@ -518,22 +518,22 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 					}
 					plugin.getDesc().getUserdata().set(p.getUniqueId().toString() + ".profiles." + profile, map);
 					plugin.getDesc().saveUserdata();
-					p.sendMessage("Profile "+profile+" saved!");
+					p.sendMessage(plugin.getDesc().getMessage("profile-saved","Profile "+profile+" saved!"));
 
 				} else if (action.equalsIgnoreCase("use")) {
 					ConfigurationSection fields = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString() + ".profiles." + profile);
 					if (fields != null) {
 						for (String field : fields.getKeys(false))
 							plugin.getDesc().setField(p.getUniqueId(),fields.getString(field),field);
-						p.sendMessage("Now using " + profile + "!");
+						p.sendMessage(plugin.getDesc().getMessage("profile-changed","Now using " + profile + "!"));
 
 					} else
-						p.sendMessage("The profile " + profile + " doesn't exist!");
+						p.sendMessage(plugin.getDesc().getMessage("profile-not-found","The profile " + profile + " doesn't exist!"));
 
 				}  else if (action.equalsIgnoreCase("delete")) {
 					plugin.getDesc().getUserdata().set(p.getUniqueId().toString()+".profiles."+profile,null);
 					plugin.getDesc().saveUserdata();
-					p.sendMessage("Profile " + profile + " deleted!");
+					p.sendMessage(plugin.getDesc().getMessage("profile-deleted","Profile " + profile + " deleted!"));
 				}
 
 			} else {
