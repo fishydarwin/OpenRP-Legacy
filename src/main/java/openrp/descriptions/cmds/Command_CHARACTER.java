@@ -1,8 +1,6 @@
 package openrp.descriptions.cmds;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.ChatColor;
@@ -11,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -483,6 +482,60 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 
 				}
 
+			} else if (args[0].equalsIgnoreCase("profile")) {
+
+				if (!(sender instanceof Player)) {
+					sender.sendMessage("Please run this command as a player! Use /character override if you want to change the field of a different player!");
+					return true;
+				}
+
+				Player p = (Player) sender;
+
+				if (!p.hasPermission(plugin.getDesc().getConfig().getString("profile-perm","orpdesc.profile"))) {
+					p.sendMessage(plugin.getDesc().getMessage("no-perm"));
+					return true;
+				}
+
+				if (args.length < 2) {
+					p.sendMessage("Please provide save, use or delete!");
+					return true;
+				}
+
+				String action = args[1];
+
+				if (args.length < 3) {
+					p.sendMessage("Please provide a name for this profile!");
+					return true;
+				}
+
+				String profile = args[2];
+				if (action.equalsIgnoreCase("save")) {
+					ConfigurationSection fields = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString());
+					Map<String, Object> map = new HashMap<>();
+					for (String field : fields.getKeys(false)) {
+						if (!field.equalsIgnoreCase("profiles"))
+							map.put(field, fields.get(field));
+					}
+					plugin.getDesc().getUserdata().set(p.getUniqueId().toString() + ".profiles." + profile, map);
+					plugin.getDesc().saveUserdata();
+					p.sendMessage("Profile "+profile+" saved!");
+
+				} else if (action.equalsIgnoreCase("use")) {
+					ConfigurationSection fields = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString() + ".profiles." + profile);
+					if (fields != null) {
+						for (String field : fields.getKeys(false))
+							plugin.getDesc().setField(p.getUniqueId(),fields.getString(field),field);
+						p.sendMessage("Now using " + profile + "!");
+
+					} else
+						p.sendMessage("The profile " + profile + " doesn't exist!");
+
+				}  else if (action.equalsIgnoreCase("delete")) {
+					plugin.getDesc().getUserdata().set(p.getUniqueId().toString()+".profiles."+profile,null);
+					plugin.getDesc().saveUserdata();
+					p.sendMessage("Profile " + profile + " deleted!");
+				}
+
 			} else {
 				sender.sendMessage(plugin.getDesc().getMessage("invalid-use").replace("{usage}", label));
 			}
@@ -509,6 +562,9 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 				if (sender.hasPermission(plugin.getDesc().getConfig().getString("check-perm"))) {
 					l.add("check");
 				}
+				if (sender.hasPermission(plugin.getDesc().getConfig().getString("profile-perm","orpdesc.profile"))) {
+					l.add("profile");
+				}
 
 				return l;
 
@@ -529,7 +585,12 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 					if (sender.hasPermission(plugin.getDesc().getConfig().getString("check-perm"))) {
 						return null;
 					}
+				} else if (args[0].equalsIgnoreCase("profile")) {
+					if (sender.hasPermission(plugin.getDesc().getConfig().getString("profile-perm","orpdesc.profile"))) {
+						l.addAll(Arrays.asList("use","save","delete"));
+					}
 				}
+
 
 				return l;
 
@@ -542,9 +603,13 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 					}
 				} else if (args[0].equalsIgnoreCase("override")) {
 					if (sender.hasPermission(plugin.getDesc().getConfig().getString("override-perm"))) {
-						for (String s : plugin.getDesc().getFields()) {
-							l.add(s);
-						}
+						l.addAll(plugin.getDesc().getFields());
+					}
+				} else if (args[0].equalsIgnoreCase("profile") && !args[1].equalsIgnoreCase("save")) {
+					if (sender.hasPermission(plugin.getDesc().getConfig().getString("profile-perm","orpdesc.profile"))) {
+						ConfigurationSection profiles = plugin.getDesc().getUserdata().getConfigurationSection(((Player)sender).getUniqueId().toString()+".profiles");
+						if (profiles != null)
+							l.addAll(profiles.getKeys(false));
 					}
 				}
 
