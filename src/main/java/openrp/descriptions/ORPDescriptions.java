@@ -321,6 +321,13 @@ public class ORPDescriptions {
 	}
 
 	/**
+	 * Same as above but with default value
+	 */
+	public String getMessage(String path, String def) {
+		return plugin.colorize(getMessages().getString(path,def));
+	}
+
+	/**
 	 * Reloads OpenRP Descriptions' userdata.yml file.
 	 */
 	public void reloadUserdata() {
