@@ -525,6 +525,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 					}
 					plugin.getDesc().getUserdata().set(p.getUniqueId().toString() + ".profiles." + profile, map);
 					plugin.getDesc().saveUserdata();
+					plugin.getDesc().reloadUserdata();
 					p.sendMessage(plugin.getDesc().getMessage("profile-saved","Profile "+profile+" saved!"));
 
 				} else if (action.equalsIgnoreCase("use")) {

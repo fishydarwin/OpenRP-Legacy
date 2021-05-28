@@ -12,11 +12,14 @@ check-perm: orpdesc.check
 # Permission to bypass the "cooldown" value of all fields.
 bypass-cooldown-perm: orpdesc.bypasscooldown
 
-#Permission for /character profile
+# Permission for /character profile
 profile-perm: orpdesc.profile
 
 # Max amount of profiles players should use, -1 for unlimited
 max-profiles: 5
+
+# Permission to bypass max-profiles
+bypass-max-profiles-perm: orpdesc.bypassmaxprofiles
 
 fields:
 
