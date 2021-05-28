@@ -511,7 +511,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 				String profile = args[2];
 				if (action.equalsIgnoreCase("save")) {
 					ConfigurationSection profiles = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString()+".profiles");
-					if (profile != null && !p.hasPermission(plugin.getConfig().getString("bypass-max-profiles-perm","orpdesc.bypassmaxprofiles")) && profiles.getKeys(false).size() >= plugin.getDesc().getConfig().getInt("max-profiles",5) && plugin.getDesc().getConfig().getInt("max-profiles",5) != -1) {
+					if (profiles != null && !p.hasPermission(plugin.getConfig().getString("bypass-max-profiles-perm","orpdesc.bypassmaxprofiles")) && profiles.getKeys(false).size() >= plugin.getDesc().getConfig().getInt("max-profiles",5) && plugin.getDesc().getConfig().getInt("max-profiles",5) != -1) {
 						p.sendMessage(plugin.getDesc().getMessage("profile-max-reached","You can't have any more profiles!"));
 						return true;
 					}
@@ -526,22 +526,22 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 					plugin.getDesc().getUserdata().set(p.getUniqueId().toString() + ".profiles." + profile, map);
 					plugin.getDesc().saveUserdata();
 					plugin.getDesc().reloadUserdata();
-					p.sendMessage(plugin.getDesc().getMessage("profile-saved","Profile "+profile+" saved!"));
+					p.sendMessage(plugin.getDesc().getMessage("profile-saved","Profile {profile} saved!").replace("{profile}",profile));
 
 				} else if (action.equalsIgnoreCase("use")) {
 					ConfigurationSection fields = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString() + ".profiles." + profile);
 					if (fields != null) {
 						for (String field : fields.getKeys(false))
 							plugin.getDesc().setField(p.getUniqueId(),fields.getString(field),field);
-						p.sendMessage(plugin.getDesc().getMessage("profile-changed","Now using " + profile + "!"));
+						p.sendMessage(plugin.getDesc().getMessage("profile-changed","Now using {profile}!").replace("{profile}",profile));
 
 					} else
-						p.sendMessage(plugin.getDesc().getMessage("profile-not-found","The profile " + profile + " doesn't exist!"));
+						p.sendMessage(plugin.getDesc().getMessage("profile-not-found","The profile {profile} doesn't exist!").replace("{profile}",profile));
 
 				}  else if (action.equalsIgnoreCase("delete")) {
 					plugin.getDesc().getUserdata().set(p.getUniqueId().toString()+".profiles."+profile,null);
 					plugin.getDesc().saveUserdata();
-					p.sendMessage(plugin.getDesc().getMessage("profile-deleted","Profile " + profile + " deleted!"));
+					p.sendMessage(plugin.getDesc().getMessage("profile-deleted","Profile {profile} deleted!").replace("{profile}",profile));
 				}
 
 			} else {
