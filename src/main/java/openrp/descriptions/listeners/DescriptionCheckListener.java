@@ -32,6 +32,14 @@ public class DescriptionCheckListener implements Listener {
 		if (!(plugin.getServer().getOnlinePlayers().contains(event.getRightClicked()))) {
 			return;
 		}
+		
+		if (plugin.getDesc().getConfig().isSet("right-click-player-to-view-description")) {
+			if (!plugin.getDesc().getConfig().getBoolean("right-click-player-to-view-description")) {
+				return;
+			}
+		} else {
+			return;
+		}
 
 		if (plugin.getDesc().getConfig().isSet("must-crouch-to-view-description")) {
 			if (plugin.getDesc().getConfig().getBoolean("must-crouch-to-view-description")) {
@@ -45,7 +53,7 @@ public class DescriptionCheckListener implements Listener {
 			for (String s : plugin.getDesc().getConfig().getStringList("description-format")) {
 				event.getPlayer()
 						.sendMessage(plugin.colorize(plugin.parsePlaceholders(s, (Player) event.getRightClicked(),
-								plugin.getDesc().getStandardHashMap((Player) event.getRightClicked()))));
+								plugin.getDesc().getStandardHashMap((Player) event.getRightClicked())), false));
 			}
 		}
 

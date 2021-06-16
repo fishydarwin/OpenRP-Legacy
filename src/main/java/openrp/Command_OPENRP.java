@@ -37,7 +37,7 @@ public class Command_OPENRP implements CommandExecutor, TabCompleter {
 			s = s.replaceFirst(", ", "");
 			for (String t : plugin.getMessages().getStringList("openrp-command")) {
 				sender.sendMessage(plugin
-						.colorize(t.replace("{v}", plugin.getDescription().getVersion()).replace("{modules}", s)));
+						.colorize(t.replace("{v}", plugin.getDescription().getVersion()).replace("{modules}", s), false));
 
 			}
 			return true;

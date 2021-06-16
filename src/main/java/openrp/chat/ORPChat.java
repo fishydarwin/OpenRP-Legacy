@@ -197,9 +197,9 @@ public class ORPChat {
 			String messageToSend = plugin
 					.parsePlaceholders(
 							plugin.colorize(
-									getConfig().getString("channels." + preprintevent.getChannel() + ".format")),
+									getConfig().getString("channels." + preprintevent.getChannel() + ".format"), false),
 							player, getStandardHashMap(player))
-					.replace("{message}", plugin.colorize(preprintevent.getMessage()));
+					.replace("{message}", preprintevent.getMessage());
 
 			player.sendMessage(messageToSend);
 
@@ -215,9 +215,9 @@ public class ORPChat {
 					String messageToSend = plugin
 							.parsePlaceholders(
 									plugin.colorize(getConfig()
-											.getString("channels." + preprintevent.getChannel() + ".format")),
+											.getString("channels." + preprintevent.getChannel() + ".format"), false),
 									player, getStandardHashMap(player))
-							.replace("{message}", plugin.colorize(preprintevent.getMessage()));
+							.replace("{message}", preprintevent.getMessage());
 
 					p.sendMessage(messageToSend);
 
@@ -327,7 +327,7 @@ public class ORPChat {
 	 * file.
 	 */
 	public String getMessage(String path) {
-		return plugin.colorize(getMessages().getString(path));
+		return plugin.colorize(getMessages().getString(path), false);
 	}
 
 }

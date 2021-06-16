@@ -130,7 +130,7 @@ public class ORPRolls {
 	 * file.
 	 */
 	public String getMessage(String path) {
-		return plugin.colorize(getMessages().getString(path));
+		return plugin.colorize(getMessages().getString(path), false);
 	}
 
 }

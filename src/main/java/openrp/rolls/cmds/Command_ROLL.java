@@ -67,7 +67,7 @@ public class Command_ROLL implements CommandExecutor, TabCompleter {
 				Integer output = plugin.getRolls().roll(preprintevent.getMinimum(), preprintevent.getMaximum());
 
 				String messageToSend = plugin.parsePlaceholders(
-						plugin.colorize(plugin.getRolls().getConfig().getString("message.text")), player,
+						plugin.colorize(plugin.getRolls().getConfig().getString("message.text"), false), player,
 						plugin.getRolls().getStandardHashMap(player, output, preprintevent.getMaximum().toString()));
 
 				plugin.getLogger()
@@ -166,14 +166,14 @@ public class Command_ROLL implements CommandExecutor, TabCompleter {
 
 					if (!args[0].toLowerCase().contains("-")) {
 						messageToSend = plugin.parsePlaceholders(
-								plugin.colorize(plugin.getRolls().getConfig().getString("message.text")), player,
+								plugin.colorize(plugin.getRolls().getConfig().getString("message.text"), false), player,
 								plugin.getRolls().getStandardHashMap(player, output,
 										preprintevent.getMaximum().toString()));
 						plugin.getLogger().info(
 								player.getName() + " rolled " + output.toString() + " / " + preprintevent.getMaximum());
 					} else {
 						messageToSend = plugin.parsePlaceholders(
-								plugin.colorize(plugin.getRolls().getConfig().getString("message.text")), player,
+								plugin.colorize(plugin.getRolls().getConfig().getString("message.text"), false), player,
 								plugin.getRolls().getStandardHashMap(player, output,
 										preprintevent.getMinimum() + "-" + preprintevent.getMaximum()));
 						plugin.getLogger().info(player.getName() + " rolled " + output.toString() + " / "

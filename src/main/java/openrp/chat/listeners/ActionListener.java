@@ -32,9 +32,9 @@ public class ActionListener implements Listener {
 				String symbol = chat.getConfig().getString("channels." + channel + ".action.symbol", "*");
 
 				String prefix = plugin.colorize(chat.getConfig()
-						.getString("channels." + channel + ".action.replacement.outside-of-actions", "&f"));
+						.getString("channels." + channel + ".action.replacement.outside-of-actions", "&f"), false);
 				String suffix = plugin.colorize(
-						chat.getConfig().getString("channels." + channel + ".action.replacement.for-actions", "&e*"));
+						chat.getConfig().getString("channels." + channel + ".action.replacement.for-actions", "&e*"), false);
 
 				list[0] = symbol;
 				list[1] = prefix;
@@ -49,16 +49,23 @@ public class ActionListener implements Listener {
 
 	@EventHandler
 	public void onChatMessage(ORPChatEvent event) {
-		if (!channelsWithActions.containsKey(event.getChannel())) {
+		String channel = event.getChannel();
+		if (ToggleSwitchListener.usingSwitches()) {
+			String switchChannel = ToggleSwitchListener.getSwitchChannel(event.getPlayer());
+			if (switchChannel != null) {
+				channel = switchChannel;
+			}
+		}
+		if (!channelsWithActions.containsKey(channel)) {
 			return;
 		}
 
-		if (!event.getMessage().contains(channelsWithActions.get(event.getChannel())[0])) {
+		if (!event.getMessage().contains(channelsWithActions.get(channel)[0])) {
 			return;
 		}
 
 		// Ensures fixed regular expression pattern
-		String SPECIAL_CHARACTER = Pattern.quote(channelsWithActions.get(event.getChannel())[0]);
+		String SPECIAL_CHARACTER = Pattern.quote(channelsWithActions.get(channel)[0]);
 		{
 			String test = event.getMessage() + " ";
 			if (test.split(SPECIAL_CHARACTER).length <= 2) {
@@ -69,8 +76,8 @@ public class ActionListener implements Listener {
 		String assemble = "";
 		{
 			boolean isInsideAction = false;
-			String prefix = channelsWithActions.get(event.getChannel())[1];
-			String suffix = channelsWithActions.get(event.getChannel())[2];
+			String prefix = channelsWithActions.get(channel)[1];
+			String suffix = channelsWithActions.get(channel)[2];
 			for (String substring : event.getMessage().split(SPECIAL_CHARACTER)) {
 				if (isInsideAction == false) {
 					assemble += prefix + substring;

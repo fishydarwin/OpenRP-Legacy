@@ -43,9 +43,11 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 
 					if (!t.contains("{change}")) {
 
-						((Player) sender).sendMessage(plugin
-								.colorize(t.replace("{field}", s).replace("{value}", plugin.getDesc().getUserdata()
-										.getString(((Player) sender).getUniqueId().toString() + "." + s))));
+						((Player) sender).sendMessage(plugin.colorize(
+								t.replace("{field}", s).replace("{value}",
+										plugin.getDesc().getUserdata()
+												.getString(((Player) sender).getUniqueId().toString() + "." + s)),
+								false));
 
 					} else {
 
@@ -60,7 +62,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 									for (String w : plugin.getDesc().getConfig()
 											.getStringList("fields." + s + ".allowed-values.value")) {
 
-										String v = ChatColor.stripColor(plugin.colorize(w));
+										String v = ChatColor.stripColor(plugin.colorize(w, true));
 
 										TextComponent add = new TextComponent(TextComponent.fromLegacyText(
 												plugin.getDesc().getMessage("field-manipulation.change.list")
@@ -68,7 +70,8 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 
 										add.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
 												new ComponentBuilder(plugin.colorize(plugin.getDesc().getMessages()
-														.getString("field-manipulation.hover", "&a&lO"))).create()));
+														.getString("field-manipulation.hover", "&a&lO"), false))
+																.create()));
 										add.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
 												"/character set " + s + " " + v));
 
@@ -87,7 +90,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 									add.setHoverEvent(
 											new HoverEvent(HoverEvent.Action.SHOW_TEXT,
 													new ComponentBuilder(plugin.colorize(plugin.getDesc().getMessages()
-															.getString("field-manipulation.hover", "&a&lO")))
+															.getString("field-manipulation.hover", "&a&lO"), false))
 																	.create()));
 									add.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
 											"/character set " + s + " "));
@@ -167,9 +170,10 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 
 				String value = "";
 				for (String s : args) {
-					value += " " + plugin.colorize(s);
+					value += " " + plugin.colorize(s, false);
 				}
-				value = value.replaceFirst(plugin.colorize(" " + args[0] + " " + args[1] + " " + args[2] + " "), "");
+				value = value.replaceFirst(plugin.colorize(" " + args[0] + " " + args[1] + " " + args[2] + " ", false),
+						"");
 				ORPDescriptionsChangeEvent event = new ORPDescriptionsChangeEvent(UUID.fromString(suuid), field, value);
 				plugin.getServer().getPluginManager().callEvent(event);
 
@@ -223,7 +227,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 
 				for (String s : plugin.getDesc().getConfig().getStringList("description-format")) {
 					player.sendMessage(plugin.colorize(plugin.parsePlaceholders(s, UUID.fromString(suuid),
-							plugin.getDesc().getStandardHashMap(UUID.fromString(suuid)))));
+							plugin.getDesc().getStandardHashMap(UUID.fromString(suuid))), false));
 				}
 
 			} else if (args[0].equalsIgnoreCase("set")) {
@@ -258,10 +262,15 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 				}
 
 				String value = "";
-				for (String s : args) {
-					value += " " + plugin.colorize(s);
+				boolean hasPerm = false;
+				if (plugin.getDesc().getConfig().isSet("fields." + field + ".color-code-perm")) {
+					hasPerm = player.hasPermission(
+							plugin.getDesc().getConfig().getString("fields." + field + ".color-code-perm"));
 				}
-				value = value.replaceFirst(plugin.colorize(" " + args[0] + " " + args[1] + " "), "");
+				for (String s : args) {
+					value += " " + plugin.colorize(s, !hasPerm);
+				}
+				value = value.replaceFirst(plugin.colorize(" " + args[0] + " " + args[1] + " ", !hasPerm), "");
 				ORPDescriptionsChangeEvent event = new ORPDescriptionsChangeEvent(player.getUniqueId(), field, value);
 				plugin.getServer().getPluginManager().callEvent(event);
 
@@ -287,8 +296,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 					plugin.getDesc().getCooldowns().put(player, System.currentTimeMillis());
 
 					if (plugin.getDesc().getConfig().isSet("fields." + field + ".color-code-perm")) {
-						if (!player.hasPermission(
-								plugin.getDesc().getConfig().getString("fields." + field + ".color-code-perm"))) {
+						if (!hasPerm) {
 							value = ChatColor.stripColor(value);
 						}
 					}
@@ -434,9 +442,9 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 								if (!caseSensitive) {
 									for (String s : plugin.getDesc().getConfig()
 											.getStringList("fields." + field + ".allowed-values.value")) {
-										if (ChatColor.stripColor(plugin.colorize(s))
-												.equalsIgnoreCase(ChatColor.stripColor(plugin.colorize(value)))) {
-											value = plugin.colorize(s);
+										if (ChatColor.stripColor(plugin.colorize(s, true))
+												.equalsIgnoreCase(ChatColor.stripColor(plugin.colorize(value, true)))) {
+											value = plugin.colorize(s, false);
 											found = true;
 											break;
 										}
@@ -444,9 +452,9 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 								} else {
 									for (String s : plugin.getDesc().getConfig()
 											.getStringList("fields." + field + ".allowed-values.value")) {
-										if (ChatColor.stripColor(plugin.colorize(s))
-												.equals(ChatColor.stripColor(plugin.colorize(value)))) {
-											value = plugin.colorize(s);
+										if (ChatColor.stripColor(plugin.colorize(s, true))
+												.equals(ChatColor.stripColor(plugin.colorize(value, true)))) {
+											value = plugin.colorize(s, false);
 											found = true;
 											break;
 										}
@@ -478,7 +486,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 
 					plugin.getDesc().setField(player, value, field);
 					player.sendMessage(plugin.getDesc().getMessage("set.self").replace("{field}", field)
-							.replace("{value}", plugin.colorize(value)));
+							.replace("{value}", plugin.colorize(value, false)));
 
 				}
 
@@ -491,33 +499,40 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 
 				Player p = (Player) sender;
 
-				if (!p.hasPermission(plugin.getDesc().getConfig().getString("profile-perm","orpdesc.profile"))) {
+				if (!p.hasPermission(plugin.getDesc().getConfig().getString("profile-perm", "orpdesc.profile"))) {
 					p.sendMessage(plugin.getDesc().getMessage("no-perm"));
 					return true;
 				}
 
 				if (args.length < 2) {
-					p.sendMessage(plugin.getDesc().getMessage("profile-usage","Please provide save, use or delete!"));
+					p.sendMessage(plugin.getDesc().getMessage("profile-usage", "Please provide save, use or delete!"));
 					return true;
 				}
 
 				String action = args[1];
 
 				if (args.length < 3) {
-					p.sendMessage(plugin.getDesc().getMessage("profile-require-name","Please provide a name for this profile!"));
+					p.sendMessage(plugin.getDesc().getMessage("profile-require-name",
+							"Please provide a name for this profile!"));
 					return true;
 				}
 
 				String profile = args[2];
 				if (action.equalsIgnoreCase("save")) {
-					ConfigurationSection profiles = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString()+".profiles");
-					if (profiles != null && !p.hasPermission(plugin.getConfig().getString("bypass-max-profiles-perm","orpdesc.bypassmaxprofiles")) && profiles.getKeys(false).size() >= plugin.getDesc().getConfig().getInt("max-profiles",5) && plugin.getDesc().getConfig().getInt("max-profiles",5) != -1) {
-						p.sendMessage(plugin.getDesc().getMessage("profile-max-reached","You can't have any more profiles!"));
+					ConfigurationSection profiles = plugin.getDesc().getUserdata()
+							.getConfigurationSection(p.getUniqueId().toString() + ".profiles");
+					if (profiles != null
+							&& !p.hasPermission(plugin.getConfig().getString("bypass-max-profiles-perm",
+									"orpdesc.bypassmaxprofiles"))
+							&& profiles.getKeys(false).size() >= plugin.getDesc().getConfig().getInt("max-profiles", 5)
+							&& plugin.getDesc().getConfig().getInt("max-profiles", 5) != -1) {
+						p.sendMessage(plugin.getDesc().getMessage("profile-max-reached",
+								"You can't have any more profiles!"));
 						return true;
 					}
 
-
-					ConfigurationSection fields = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString());
+					ConfigurationSection fields = plugin.getDesc().getUserdata()
+							.getConfigurationSection(p.getUniqueId().toString());
 					Map<String, Object> map = new HashMap<>();
 					for (String field : fields.getKeys(false)) {
 						if (!field.equalsIgnoreCase("profiles"))
@@ -526,22 +541,28 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 					plugin.getDesc().getUserdata().set(p.getUniqueId().toString() + ".profiles." + profile, map);
 					plugin.getDesc().saveUserdata();
 					plugin.getDesc().reloadUserdata();
-					p.sendMessage(plugin.getDesc().getMessage("profile-saved","Profile {profile} saved!").replace("{profile}",profile));
+					p.sendMessage(plugin.getDesc().getMessage("profile-saved", "Profile {profile} saved!")
+							.replace("{profile}", profile));
 
 				} else if (action.equalsIgnoreCase("use")) {
-					ConfigurationSection fields = plugin.getDesc().getUserdata().getConfigurationSection(p.getUniqueId().toString() + ".profiles." + profile);
+					ConfigurationSection fields = plugin.getDesc().getUserdata()
+							.getConfigurationSection(p.getUniqueId().toString() + ".profiles." + profile);
 					if (fields != null) {
 						for (String field : fields.getKeys(false))
-							plugin.getDesc().setField(p.getUniqueId(),fields.getString(field),field);
-						p.sendMessage(plugin.getDesc().getMessage("profile-changed","Now using {profile}!").replace("{profile}",profile));
+							plugin.getDesc().setField(p.getUniqueId(), fields.getString(field), field);
+						p.sendMessage(plugin.getDesc().getMessage("profile-changed", "Now using {profile}!")
+								.replace("{profile}", profile));
 
 					} else
-						p.sendMessage(plugin.getDesc().getMessage("profile-not-found","The profile {profile} doesn't exist!").replace("{profile}",profile));
+						p.sendMessage(
+								plugin.getDesc().getMessage("profile-not-found", "The profile {profile} doesn't exist!")
+										.replace("{profile}", profile));
 
-				}  else if (action.equalsIgnoreCase("delete")) {
-					plugin.getDesc().getUserdata().set(p.getUniqueId().toString()+".profiles."+profile,null);
+				} else if (action.equalsIgnoreCase("delete")) {
+					plugin.getDesc().getUserdata().set(p.getUniqueId().toString() + ".profiles." + profile, null);
 					plugin.getDesc().saveUserdata();
-					p.sendMessage(plugin.getDesc().getMessage("profile-deleted","Profile {profile} deleted!").replace("{profile}",profile));
+					p.sendMessage(plugin.getDesc().getMessage("profile-deleted", "Profile {profile} deleted!")
+							.replace("{profile}", profile));
 				}
 
 			} else {
@@ -570,7 +591,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 				if (sender.hasPermission(plugin.getDesc().getConfig().getString("check-perm"))) {
 					l.add("check");
 				}
-				if (sender.hasPermission(plugin.getDesc().getConfig().getString("profile-perm","orpdesc.profile"))) {
+				if (sender.hasPermission(plugin.getDesc().getConfig().getString("profile-perm", "orpdesc.profile"))) {
 					l.add("profile");
 				}
 
@@ -594,11 +615,11 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 						return null;
 					}
 				} else if (args[0].equalsIgnoreCase("profile")) {
-					if (sender.hasPermission(plugin.getDesc().getConfig().getString("profile-perm","orpdesc.profile"))) {
-						l.addAll(Arrays.asList("use","save","delete"));
+					if (sender
+							.hasPermission(plugin.getDesc().getConfig().getString("profile-perm", "orpdesc.profile"))) {
+						l.addAll(Arrays.asList("use", "save", "delete"));
 					}
 				}
-
 
 				return l;
 
@@ -614,8 +635,10 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 						l.addAll(plugin.getDesc().getFields());
 					}
 				} else if (args[0].equalsIgnoreCase("profile") && !args[1].equalsIgnoreCase("save")) {
-					if (sender.hasPermission(plugin.getDesc().getConfig().getString("profile-perm","orpdesc.profile"))) {
-						ConfigurationSection profiles = plugin.getDesc().getUserdata().getConfigurationSection(((Player)sender).getUniqueId().toString()+".profiles");
+					if (sender
+							.hasPermission(plugin.getDesc().getConfig().getString("profile-perm", "orpdesc.profile"))) {
+						ConfigurationSection profiles = plugin.getDesc().getUserdata()
+								.getConfigurationSection(((Player) sender).getUniqueId().toString() + ".profiles");
 						if (profiles != null)
 							l.addAll(profiles.getKeys(false));
 					}

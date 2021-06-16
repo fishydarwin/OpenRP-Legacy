@@ -309,7 +309,7 @@ public class ORPTime {
 									TextComponent.fromLegacyText(
 											plugin.colorize(plugin.parsePlaceholders(getConfig().getString("format"), p,
 													getStandardHashMap(p, th.getSecond(), th.getMinute(), th.getHour(),
-															th.getDay(), th.getMonth(), th.getYear())))));
+															th.getDay(), th.getMonth(), th.getYear())), false)));
 						}
 					}
 
@@ -543,7 +543,7 @@ public class ORPTime {
 	 * file.
 	 */
 	public String getMessage(String path) {
-		return plugin.colorize(getMessages().getString(path));
+		return plugin.colorize(getMessages().getString(path), false);
 	}
 
 	/**

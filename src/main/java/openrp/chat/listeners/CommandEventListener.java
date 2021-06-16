@@ -111,9 +111,10 @@ public class CommandEventListener implements Listener {
 
 		// Let's strip any colors if the player doesn't have perms here.
 		// This way we can replace colors properly in both chat & preprint events.
-		msg = plugin.colorize(msg);
-		if (!event.getPlayer()
-				.hasPermission(plugin.getChat().getConfig().getString("channels." + channel + ".color-code-perm"))) {
+		boolean hasPerm = event.getPlayer()
+				.hasPermission(plugin.getChat().getConfig().getString("channels." + channel + ".color-code-perm"));
+		msg = plugin.colorize(msg, !hasPerm);
+		if (!hasPerm) {
 			msg = ChatColor.stripColor(msg);
 		}
 
@@ -196,9 +197,10 @@ public class CommandEventListener implements Listener {
 
 		// Let's strip any colors if the player doesn't have perms here.
 		// This way we can replace colors properly in both chat & preprint events.
-		String msg = plugin.colorize(event.getMessage());
-		if (!event.getPlayer()
-				.hasPermission(plugin.getChat().getConfig().getString("channels." + channel + ".color-code-perm"))) {
+		boolean hasPerm = event.getPlayer()
+				.hasPermission(plugin.getChat().getConfig().getString("channels." + channel + ".color-code-perm"));
+		String msg = plugin.colorize(event.getMessage(), !hasPerm);
+		if (!hasPerm) {
 			msg = ChatColor.stripColor(msg);
 		}
 

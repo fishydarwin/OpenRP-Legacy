@@ -82,7 +82,7 @@ public class ORPDescriptions {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks to see if a field is set.
 	 * 
@@ -227,7 +227,7 @@ public class ORPDescriptions {
 		plugin.getLogger().info("Registering Descriptions Listeners...");
 		plugin.getServer().getPluginManager().registerEvents(new DescriptionCheckListener(plugin), plugin);
 		plugin.getLogger().info("Registering Descriptions Expansions...");
-		
+
 		plugin.getLogger().info("Running Descriptions Default Info Completer. This is Async, but might take a bit...");
 		plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
 			@Override
@@ -317,14 +317,14 @@ public class ORPDescriptions {
 	 * file.
 	 */
 	public String getMessage(String path) {
-		return plugin.colorize(getMessages().getString(path));
+		return plugin.colorize(getMessages().getString(path), false);
 	}
 
 	/**
 	 * Same as above but with default value
 	 */
 	public String getMessage(String path, String def) {
-		return plugin.colorize(getMessages().getString(path,def));
+		return plugin.colorize(getMessages().getString(path, def), false);
 	}
 
 	/**
@@ -356,5 +356,5 @@ public class ORPDescriptions {
 	public FileConfiguration getUserdata() {
 		return userdata;
 	}
-	
+
 }

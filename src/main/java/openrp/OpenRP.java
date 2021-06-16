@@ -210,27 +210,32 @@ public class OpenRP extends JavaPlugin {
 	 * color code. 1.16 addition: also handles hex codes. Exists for convenience.
 	 * 
 	 * @param input - The input String to parse.
+	 * @param stripColors - Whether to strip Hex codes instead of colorizing them.
 	 * @return The final colorized String.
 	 */
-	public String colorize(String input) {
+	public String colorize(String input, boolean stripHex) {
 		String formatted = ChatColor.translateAlternateColorCodes('&', input);
 		if (canUseHex) {
-			return formatHexCodes(formatted);
+			return formatHexCodes(formatted, stripHex);
 		}
 		return formatted;
 	}
 
 	private static final Pattern hexColorPattern = Pattern.compile("((\\B#)(([0-9]|[a-z]){6}))");
 
-	private String formatHexCodes(String input) {
+	private String formatHexCodes(String input, boolean stripHex) {
 		String value = input;
 		Matcher matcher = hexColorPattern.matcher(input);
 		while (matcher.find()) {
 			String hexcode = matcher.group();
 			hexcode = hexcode.toLowerCase();
-			String fixed = new String(new char[] { '&', hexcode.charAt(1), '&', hexcode.charAt(2), '&',
-					hexcode.charAt(3), '&', hexcode.charAt(4), '&', hexcode.charAt(5), '&', hexcode.charAt(6) });
-			value = value.replace(hexcode, "&x" + fixed);
+			if (!stripHex) {
+				String fixed = new String(new char[] { '&', hexcode.charAt(1), '&', hexcode.charAt(2), '&',
+						hexcode.charAt(3), '&', hexcode.charAt(4), '&', hexcode.charAt(5), '&', hexcode.charAt(6) });
+				value = value.replace(hexcode, "&x" + fixed);
+			} else {
+				value = value.replace(hexcode, "");
+			}
 		}
 		return value;
 	}
@@ -434,7 +439,7 @@ public class OpenRP extends JavaPlugin {
 	 * file.
 	 */
 	public String getMessage(String path) {
-		return colorize(getMessages().getString(path));
+		return colorize(getMessages().getString(path), false);
 	}
 
 }
