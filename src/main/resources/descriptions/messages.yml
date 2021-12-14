@@ -30,3 +30,11 @@ cooldown: '&cYou must wait {time} seconds before setting this value.'
 set:
    self: '&aValue of &e{field}&a has been changed to &d{value}&a.'
    override: '&aValue of &e{field}&a for &b{player}&a changed to &d{value}&a.'
+   
+profile-usage: '&cPlease provide save, use or delete!'
+profile-require-name: '&cPlease provide a name for this profile!'
+profile-max-reached: '&cYou can''t have any more profiles!'
+profile-saved: '&aProfile {profile} saved!'
+profile-changed: '&aNow using {profile}!'
+profile-not-found: '&cThe profile {profile} doesn''t exist!'
+profile-deleted: '&cProfile {profile} deleted!'

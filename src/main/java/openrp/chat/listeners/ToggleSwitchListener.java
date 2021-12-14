@@ -128,22 +128,39 @@ public class ToggleSwitchListener implements Listener {
 		if (!switches.containsKey(event.getPlayer())) {
 			return;
 		}
-		/* SEEMS NOT TO BE REQUIRED
-		if (useToggles) {
-			if (toggles.containsKey(event.getPlayer())) {
-				if (toggles.get(event.getPlayer()).contains(switches.get(event.getPlayer()))) {
-					event.getPlayer().sendMessage(plugin.getChat().getMessage("cant-use-when-toggled-off"));
-					event.setCancelled(true);
-					return;
+		String channel = switches.get(event.getPlayer());
+		// Check permission node
+		if (plugin.getChat().getConfig().isSet("channels." + channel + ".use-perm")) {
+			if (!event.getPlayer()
+					.hasPermission(plugin.getChat().getConfig().getString("channels." + channel + ".use-perm"))) {
+				event.getPlayer().sendMessage(plugin.getChat().getMessage("no-use-perm"));
+				event.setCancelled(true);
+			}
+		}
+		// Check cooldown
+		if (!event.getPlayer().hasPermission(plugin.getChat().getConfig().getString("bypass-cooldown-perm"))) {
+			if (!plugin.getChat().getCooldowns().isEmpty()) {
+				if (plugin.getChat().getCooldowns().containsKey(event.getPlayer())) {
+					if (!plugin.getChat().getCooldowns().get(event.getPlayer()).isEmpty()) {
+						if (plugin.getChat().getCooldowns().get(event.getPlayer()).containsKey(channel)) {
+							if ((System.currentTimeMillis()
+									- plugin.getChat().getCooldowns().get(event.getPlayer()).get(channel))
+									/ 1000 < plugin.getChat().getConfig().getInt("channels." + channel + ".cooldown")) {
+								event.getPlayer().sendMessage(plugin.getChat().getMessage("cooldown").replace("{time}",
+										((Long) (plugin.getChat().getConfig()
+												.getInt("channels." + channel + ".cooldown")
+												- (System.currentTimeMillis() - plugin.getChat().getCooldowns()
+														.get(event.getPlayer()).get(channel)) / 1000)).toString()));
+								event.setCancelled(true);
+							}
+						}
+					}
+
 				}
 			}
 		}
-		NOT REQUIRED SINCE wasCommand() is an option
-		if (switches.get(event.getPlayer()).equals(defaultChannel)) {
-			return;
-		}
-		*/
-		event.setChannel(switches.get(event.getPlayer()));
+		// Ok
+		event.setChannel(channel);
 	}
 
 }

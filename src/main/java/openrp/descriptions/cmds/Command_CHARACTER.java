@@ -505,7 +505,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 				}
 
 				if (args.length < 2) {
-					p.sendMessage(plugin.getDesc().getMessage("profile-usage", "Please provide save, use or delete!"));
+					p.sendMessage(plugin.getDesc().getMessage("profile-usage", ChatColor.RED + "Please provide save, use or delete!"));
 					return true;
 				}
 
@@ -513,7 +513,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 
 				if (args.length < 3) {
 					p.sendMessage(plugin.getDesc().getMessage("profile-require-name",
-							"Please provide a name for this profile!"));
+							 ChatColor.RED + "Please provide a name for this profile!"));
 					return true;
 				}
 
@@ -527,7 +527,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 							&& profiles.getKeys(false).size() >= plugin.getDesc().getConfig().getInt("max-profiles", 5)
 							&& plugin.getDesc().getConfig().getInt("max-profiles", 5) != -1) {
 						p.sendMessage(plugin.getDesc().getMessage("profile-max-reached",
-								"You can't have any more profiles!"));
+								 ChatColor.RED + "You can't have any more profiles!"));
 						return true;
 					}
 
@@ -541,7 +541,7 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 					plugin.getDesc().getUserdata().set(p.getUniqueId().toString() + ".profiles." + profile, map);
 					plugin.getDesc().saveUserdata();
 					plugin.getDesc().reloadUserdata();
-					p.sendMessage(plugin.getDesc().getMessage("profile-saved", "Profile {profile} saved!")
+					p.sendMessage(plugin.getDesc().getMessage("profile-saved",  ChatColor.GREEN + "Profile {profile} saved!")
 							.replace("{profile}", profile));
 
 				} else if (action.equalsIgnoreCase("use")) {
@@ -550,18 +550,18 @@ public class Command_CHARACTER implements CommandExecutor, TabCompleter {
 					if (fields != null) {
 						for (String field : fields.getKeys(false))
 							plugin.getDesc().setField(p.getUniqueId(), fields.getString(field), field);
-						p.sendMessage(plugin.getDesc().getMessage("profile-changed", "Now using {profile}!")
+						p.sendMessage(plugin.getDesc().getMessage("profile-changed", ChatColor.GREEN + "Now using {profile}!")
 								.replace("{profile}", profile));
 
 					} else
 						p.sendMessage(
-								plugin.getDesc().getMessage("profile-not-found", "The profile {profile} doesn't exist!")
+								plugin.getDesc().getMessage("profile-not-found", ChatColor.RED + "The profile {profile} doesn't exist!")
 										.replace("{profile}", profile));
 
 				} else if (action.equalsIgnoreCase("delete")) {
 					plugin.getDesc().getUserdata().set(p.getUniqueId().toString() + ".profiles." + profile, null);
 					plugin.getDesc().saveUserdata();
-					p.sendMessage(plugin.getDesc().getMessage("profile-deleted", "Profile {profile} deleted!")
+					p.sendMessage(plugin.getDesc().getMessage("profile-deleted", ChatColor.YELLOW + "Profile {profile} deleted!")
 							.replace("{profile}", profile));
 				}
 

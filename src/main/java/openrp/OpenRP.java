@@ -34,11 +34,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.md_5.bungee.api.ChatColor;
 import openrp.chat.ORPChat;
 import openrp.descriptions.ORPDescriptions;
-import openrp.descriptions.expansions.MVdW_Descriptions;
 import openrp.descriptions.expansions.PAPI_Descriptions;
 import openrp.rolls.ORPRolls;
 import openrp.time.ORPTime;
-import openrp.time.expansions.MVdW_Time;
 import openrp.time.expansions.PAPI_Time;
 import openrp.time.utils.TimeHandler;
 
@@ -57,7 +55,6 @@ public class OpenRP extends JavaPlugin {
 	private FileConfiguration messages;
 
 	private boolean api_papi = false;
-	private boolean api_mvdw = false;
 
 	private ORPChat chat;
 	private ORPDescriptions desc;
@@ -163,10 +160,6 @@ public class OpenRP extends JavaPlugin {
 			}
 		}
 
-		if (api_mvdw) {
-			output = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, output);
-		}
-
 		return output;
 	}
 
@@ -195,11 +188,6 @@ public class OpenRP extends JavaPlugin {
 				output = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(getServer().getOfflinePlayer(uuid),
 						output);
 			}
-		}
-
-		if (api_mvdw) {
-			output = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(getServer().getOfflinePlayer(uuid),
-					output);
 		}
 
 		return output;
@@ -375,10 +363,6 @@ public class OpenRP extends JavaPlugin {
 			getLogger().info("Found PlaceholderAPI. Hooking into it!");
 			api_papi = true;
 		}
-		if (getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-			getLogger().info("Found MVdWPlaceholderAPI. Hooking into it!");
-			api_mvdw = true;
-		}
 
 		plugin.getLogger().info("Registering Descriptions Expansions...");
 		plugin.getLogger().info("Registering Time Expansions...");
@@ -387,12 +371,6 @@ public class OpenRP extends JavaPlugin {
 			papi_ORPDESC.register();
 			PAPI_Time papi_ORPTIME = new PAPI_Time(plugin);
 			papi_ORPTIME.register();
-		}
-		if (plugin.getServer().getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-			if (plugin.getConfig().getBoolean("use-mvdw", true)) {
-				new MVdW_Descriptions(plugin, plugin.getDesc());
-				new MVdW_Time(plugin, plugin.getTime());
-			}
 		}
 
 		/*

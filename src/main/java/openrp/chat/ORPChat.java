@@ -183,15 +183,16 @@ public class ORPChat {
 		if (!preprintevent.isCancelled()) {
 
 			if (!getCooldowns().isEmpty()) {
+				HashMap<String, Long> copy = new HashMap<>();
 				if (getCooldowns().containsKey(player)) {
-					getCooldowns().get(player).put(channel, System.currentTimeMillis());
-				} else {
-					getCooldowns().put(player, new HashMap<String, Long>());
-					getCooldowns().get(player).put(channel, System.currentTimeMillis());
+					copy = getCooldowns().get(player);
 				}
+				copy.put(channel, System.currentTimeMillis());
+				getCooldowns().put(player, copy);
 			} else {
-				getCooldowns().put(player, new HashMap<String, Long>());
-				getCooldowns().get(player).put(channel, System.currentTimeMillis());
+				HashMap<String, Long> copy = new HashMap<>();
+				copy.put(channel, System.currentTimeMillis());
+				getCooldowns().put(player, copy);
 			}
 
 			String messageToSend = plugin
