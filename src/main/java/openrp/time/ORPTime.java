@@ -49,6 +49,8 @@ public class ORPTime {
 	 */
 	public void registerTimes() {
 
+		times.clear();
+
 		for (World w : plugin.getServer().getWorlds()) {
 
 			boolean skip = false;
@@ -100,7 +102,7 @@ public class ORPTime {
 
 	/**
 	 * Restarts the time handler for OpenRP Time. This handles all the time
-	 * operations, including updating times, sending bossbars/actionbars, and
+	 * operations, including updating times, sending actionbars, and
 	 * changing the worlds' times if needed.
 	 */
 	public void restartTimeHandler() {
@@ -114,6 +116,10 @@ public class ORPTime {
 
 		for (TimeHandler th : getTimes()) {
 
+			if (!plugin.getServer().getWorlds().contains(th.getWorld())) {
+				continue;
+			}
+
 			scheduleTracker.put(th.getWorld(), plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
 				@Override
 				public void run() {
@@ -125,6 +131,9 @@ public class ORPTime {
 					int month = th.getMonth();
 					int year = th.getYear();
 
+					boolean longMonth = month == 1 || month == 3 || month == 5 || month == 7 || month == 8
+							|| month == 10 || month == 12;
+					boolean leapYear = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
 					if (getConfig().getBoolean("handle-time")) {
 
 						second += (int) Math.ceil(getConfig().getInt("run-time-event-every-in-ticks")
@@ -145,8 +154,7 @@ public class ORPTime {
 									hour = 0;
 									day++;
 
-									if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8
-											|| month == 10 || month == 12) {
+									if (longMonth) {
 										if (day >= 32) {
 
 											day = 1;
@@ -175,7 +183,7 @@ public class ORPTime {
 
 										}
 									} else if (month == 2) {
-										if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
+										if (leapYear) {
 											if (day >= 30) {
 
 												day = 1;
@@ -227,8 +235,7 @@ public class ORPTime {
 
 							day++;
 
-							if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10
-									|| month == 12) {
+							if (longMonth) {
 								if (day >= 32) {
 
 									day = 1;
@@ -257,7 +264,7 @@ public class ORPTime {
 
 								}
 							} else if (month == 2) {
-								if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
+								if (leapYear) {
 									if (day >= 30) {
 
 										day = 1;
@@ -470,13 +477,13 @@ public class ORPTime {
 	 */
 	public void registerEvents() {
 		plugin.getLogger().info("Registering Time Worlds...");
-		registerTimes();
-		restartTimeHandler();
 		plugin.getLogger().info("Registering Time Commands...");
 		Command_ROLEPLAYTIME handler_TIME = new Command_ROLEPLAYTIME(plugin);
 		plugin.getCommand("roleplaytime").setExecutor(handler_TIME);
 		plugin.getCommand("roleplaytime").setTabCompleter(handler_TIME);
 		plugin.getCommand("roleplaytime").setPermission(getConfig().getString("manage-perm"));
+		// ensures proper load
+		plugin.getServer().getScheduler().runTaskLater(plugin, () -> { registerTimes(); restartTimeHandler(); }, 5);
 		plugin.getLogger().info("Time Loaded!");
 	}
 

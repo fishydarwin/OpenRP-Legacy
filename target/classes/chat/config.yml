@@ -8,11 +8,9 @@ bypass-cooldown-perm: orpchat.bypasscooldown
 default: in-character
 
 channels:
-   
    # In the default config, there are several channels added
    # You can add your own custom channels according to this guide (+ FAQ!):
    # https://github.com/fishydarwin/OpenRP/wiki/%5B2%5D-OpenRP-Chat.-How-do-I-set-it-up%3F
-   
    in-character:
       display-name: In Character Chat
       commands:
@@ -28,7 +26,6 @@ channels:
          replacement:
             outside-of-actions: '&f'
             for-actions: '&e*'
-            
    local-out-of-character:
       display-name: Local OOC
       commands:
@@ -41,7 +38,6 @@ channels:
       format: '&e[L] &f{player}&8: &7{message}'
       range: 15
       cooldown: 3
-      
    out-of-character:
       display-name: OOC
       commands:
@@ -54,7 +50,6 @@ channels:
       format: '&6[G] &f{player}&8: &7{message}'
       range: 15
       cooldown: 3
-      
    action:
       display-name: Action
       commands:
@@ -65,7 +60,6 @@ channels:
       format: '&e* &f{player} &e{message}'
       range: 15
       cooldown: 3
-      
 #  custom-channel-example:
 #     display-name: Example Channel
 #     commands:

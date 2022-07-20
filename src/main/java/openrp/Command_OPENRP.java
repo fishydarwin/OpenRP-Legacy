@@ -89,6 +89,8 @@ public class Command_OPENRP implements CommandExecutor, TabCompleter {
 						plugin.getTime().reloadMessages();
 						plugin.getTime().saveTimedata();
 						plugin.getTime().reloadTimedata();
+						plugin.getTime().registerTimes();
+						plugin.getTime().restartTimeHandler();
 					}
 				}
 				sender.sendMessage(plugin.getMessage("reloading.done"));
@@ -115,7 +117,7 @@ public class Command_OPENRP implements CommandExecutor, TabCompleter {
 					plugin.getDesc().reloadUserdata();
 					plugin.getDesc().registerFields();
 					plugin.getLogger().warning(
-							"Reloading Descriptions with new fields added is not recommended, if errors occur please restart!");
+							"Reloading Descriptions with modified fields added is not recommended, if errors occur please restart!");
 					for (Player p : plugin.getServer().getOnlinePlayers()) {
 						if (plugin.getDesc().getFields().isEmpty()) {
 							break;
@@ -144,6 +146,7 @@ public class Command_OPENRP implements CommandExecutor, TabCompleter {
 					plugin.getTime().reloadMessages();
 					plugin.getTime().saveTimedata();
 					plugin.getTime().reloadTimedata();
+					plugin.getTime().registerTimes();
 					plugin.getTime().restartTimeHandler();
 					sender.sendMessage(plugin.getMessage("reloading.done"));
 				} else {

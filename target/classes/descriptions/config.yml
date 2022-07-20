@@ -22,11 +22,9 @@ max-profiles: 5
 bypass-max-profiles-perm: orpdesc.bypassmaxprofiles
 
 fields:
-
    # In the default config, there are several fields added
    # You can add your own custom fields according to this guide (+ FAQ!):
    # https://github.com/fishydarwin/OpenRP/wiki/%5B3%5D-OpenRP-Descriptions.-How-do-I-set-it-up%3F
-
    name:
       allowed-values:
          type: contains
@@ -38,7 +36,6 @@ fields:
       color-code-perm: orpdesc.name.color
       cooldown: 10
       default-value: <?>
-      
    description:
       allowed-values:
          type: without
@@ -49,7 +46,6 @@ fields:
       color-code-perm: orpdesc.desc.color
       cooldown: 10
       default-value: No description set
-      
    gender:
       allowed-values:
          type: list
@@ -61,7 +57,6 @@ fields:
       color-code-perm: orpdesc.desc.color
       cooldown: 10
       default-value: Other
-      
    race:
       allowed-values:
          type: locked

@@ -160,7 +160,7 @@ public class OpenRP extends JavaPlugin {
 			}
 		}
 
-		return output;
+		return plugin.colorize(output, false);
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class OpenRP extends JavaPlugin {
 	 * color code. 1.16 addition: also handles hex codes. Exists for convenience.
 	 * 
 	 * @param input - The input String to parse.
-	 * @param stripColors - Whether to strip Hex codes instead of colorizing them.
+	 * @param stripHex - Whether to strip Hex codes instead of colorizing them.
 	 * @return The final colorized String.
 	 */
 	public String colorize(String input, boolean stripHex) {
