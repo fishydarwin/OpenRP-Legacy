@@ -20,8 +20,11 @@ import openrp.chat.events.ORPChatEvent;
  */
 public class ActionListener implements Listener {
 
+	private OpenRP plugin;
+
 	public ActionListener(OpenRP plugin, ORPChat chat) {
 		channelsWithActions = new HashMap<>();
+		this.plugin = plugin;
 		for (String channel : chat.getChannels().keySet()) {
 			if (chat.getConfig().isSet("channels." + channel + ".action")) {
 
@@ -31,10 +34,10 @@ public class ActionListener implements Listener {
 
 				String symbol = chat.getConfig().getString("channels." + channel + ".action.symbol", "*");
 
-				String prefix = plugin.colorize(chat.getConfig()
-						.getString("channels." + channel + ".action.replacement.outside-of-actions", "&f"), false);
-				String suffix = plugin.colorize(
-						chat.getConfig().getString("channels." + channel + ".action.replacement.for-actions", "&e*"), false);
+				String prefix = chat.getConfig()
+						.getString("channels." + channel + ".action.replacement.outside-of-actions", "&f");
+				String suffix = chat.getConfig()
+						.getString("channels." + channel + ".action.replacement.for-actions", "&e*");
 
 				list[0] = symbol;
 				list[1] = prefix;
@@ -76,8 +79,14 @@ public class ActionListener implements Listener {
 		String assemble = "";
 		{
 			boolean isInsideAction = false;
-			String prefix = channelsWithActions.get(channel)[1];
-			String suffix = channelsWithActions.get(channel)[2];
+			String prefix = plugin.colorize(plugin.parsePlaceholders(
+					channelsWithActions.get(channel)[1],
+					event.getPlayer(),
+					new HashMap<>()), false);
+			String suffix = plugin.colorize(plugin.parsePlaceholders(
+					channelsWithActions.get(channel)[2],
+					event.getPlayer(),
+					new HashMap<>()), false);
 			for (String substring : event.getMessage().split(SPECIAL_CHARACTER)) {
 				if (isInsideAction == false) {
 					assemble += prefix + substring;
