@@ -1,7 +1,0 @@
-# OpenRP Time Messages.
-
-invalid-use: '&cInvalid use. Please try /{usage}.'
-no-perm: '&cYou don''t have permission to run this command.'
-wrong-time-input: '&cYou cannot have {comparison}.'
-
-changed-time: '&aThe time was changed to {time}.'

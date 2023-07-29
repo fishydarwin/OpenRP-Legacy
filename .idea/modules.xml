@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/openrp.iml" filepath="$PROJECT_DIR$/openrp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OpenRP.iml" filepath="$PROJECT_DIR$/OpenRP.iml" />
     </modules>
   </component>
 </project>
