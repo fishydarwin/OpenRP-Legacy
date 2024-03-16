@@ -1,5 +1,7 @@
 # OpenRP
 
+**This code is relatively old and does not reflect my skills any longer. However, because a lot of people are using this repository, I have kept it pinned on my GitHub profile.**
+
 OpenRP is a free plugin that adds all the essential, basic features of RP stuff to your server.
 The goal of OpenRP is to *stay simple*, and be easy to set up. Also, it is one of the only actively maintained plugins of its kind.
 It also includes unlimited chat channels, and any amount of description fields, to make it feel perfect for your server.
