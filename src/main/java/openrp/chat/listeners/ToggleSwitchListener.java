@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import openrp.OpenRP;
@@ -94,7 +95,7 @@ public class ToggleSwitchListener implements Listener {
 		event.setCancelled(true);
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onToggledOffChannelMessage(ORPChatEvent event) {
 		if (!useToggles) {
 			return;
@@ -117,7 +118,7 @@ public class ToggleSwitchListener implements Listener {
 		return switches.containsKey(p) ? switches.get(p) : null;
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOW)
 	public void onSwitchedChannelMessage(ORPChatEvent event) {
 		if (!useSwitches) {
 			return;
