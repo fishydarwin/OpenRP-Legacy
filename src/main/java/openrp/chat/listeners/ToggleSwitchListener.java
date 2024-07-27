@@ -16,6 +16,8 @@ import org.bukkit.event.Listener;
 import openrp.OpenRP;
 import openrp.chat.events.ORPChatEvent;
 import openrp.chat.events.ORPChatPreprintEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 /**
  * A listener built into OpenRP that handles toggling and switching channels.
@@ -116,6 +118,14 @@ public class ToggleSwitchListener implements Listener {
 
 	public static String getSwitchChannel(Player p) {
 		return switches.containsKey(p) ? switches.get(p) : null;
+	}
+
+	@EventHandler(priority = EventPriority.LOW)
+	public void onPlayerLogin(PlayerJoinEvent event){
+		if (!useSwitches) {
+			return;
+		}
+		setSwitchChannel(event.getPlayer(), plugin.getChat().getConfig().getString("default"));
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
