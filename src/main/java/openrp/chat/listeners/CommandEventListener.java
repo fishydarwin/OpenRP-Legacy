@@ -158,7 +158,7 @@ public class CommandEventListener implements Listener {
 		}
 
 		// All good, let's do this.
-		event.setCancelled(true);
+		event.getRecipients().clear();
 
 		// Let's grab our default channel from config for convenience.
 		String channel = plugin.getChat().getConfig().getString("default");
@@ -226,7 +226,7 @@ public class CommandEventListener implements Listener {
 
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onChatMessageSent(ORPChatEvent event) {
 
 		plugin.getLogger()

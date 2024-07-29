@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import openrp.chat.expansions.PAPI_Chat;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -371,6 +372,8 @@ public class OpenRP extends JavaPlugin {
 			papi_ORPDESC.register();
 			PAPI_Time papi_ORPTIME = new PAPI_Time(plugin);
 			papi_ORPTIME.register();
+			PAPI_Chat papi_ORPCHAT = new PAPI_Chat(plugin);
+			papi_ORPCHAT.register();
 		}
 
 		/*

@@ -9,8 +9,5 @@
         <module name="openrp" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="openrp" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
